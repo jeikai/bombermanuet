@@ -18,6 +18,8 @@ public class Main {
 		window.setLocationRelativeTo(null);
 		window.setVisible(true);
 		
+		// set up truoc bomb va cac object trong game truoc khi game chay
+		gamePanel.setupGame();
 		gamePanel.startGameThread();
 	}
 }

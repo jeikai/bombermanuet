@@ -18,7 +18,6 @@ public class TileManager {
 	
 	public TileManager(GamePanel gp) {
 		this.gp =gp;
-		// tạo ra 10 loại tiles
 		tile = new Tile[10];
 		mapTileNum = new int[gp.maxScreenCol][gp.maxScreenRow];
 		
@@ -54,13 +53,12 @@ public class TileManager {
 			int row = 0;
 			
 			while(col < gp.maxScreenCol && row < gp.maxScreenRow) {
-				// read a line of a text
+				
 				String line = br.readLine();
 				
 				while(col < gp.maxScreenCol) {
-					// mảng lưu các phần tử ko chứa khoảng trắng
 					String numbers[] = line.split(" ");
-					// chuyển string thành int
+					
 					int num = Integer.parseInt(numbers[col]);
 					
 					mapTileNum[col][row] = num;
