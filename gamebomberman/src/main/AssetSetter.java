@@ -28,5 +28,8 @@ public class AssetSetter {
 		gp.npc[0] = new NPC_Orc(gp);
 		gp.npc[0].x = gp.tileSize*3;
 		gp.npc[0].y = gp.tileSize * 7;
+		gp.npc[1] = new NPC_Orc(gp);
+		gp.npc[1].x = gp.tileSize*2;
+		gp.npc[1].y = gp.tileSize * 7;
 	}
 }

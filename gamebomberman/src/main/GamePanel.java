@@ -4,12 +4,14 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import javax.swing.JPanel;
 
 import entity.Entity;
 import entity.Player;
-import objects.SuperObject;
 import tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable {
@@ -30,10 +32,11 @@ public class GamePanel extends JPanel implements Runnable {
 	// ENTITY va cac OBJECTS
 	public AssetSetter aSetter = new AssetSetter(this);
 	Thread gameThread;
-	Player player = new Player(this, keyH);
+	public Player player = new Player(this, keyH);
 	public Entity npc[] = new Entity[10];
 	TileManager tileM = new TileManager(this);
-	public SuperObject obj[] = new SuperObject[10]; 
+	public Entity obj[] = new Entity[10]; 
+	ArrayList<Entity> entityList = new ArrayList<>();
 	
 	// game state
 	public int gameState;
@@ -120,23 +123,38 @@ public class GamePanel extends JPanel implements Runnable {
 		else {
 			// Tile
 			tileM.draw(g2);
-			
-		
-			//drawing objects on screen except bomb
-			for(int i = 0; i<obj.length; i++) {
-				if(obj[i] != null) {
-					obj[i].draw(g2, this);
-				}
-			}
-			
-			// NPC
+			// add entity to list
+			entityList.add(player);
 			for(int i = 0; i<npc.length; i++) {
 				if(npc[i] != null) {
-					npc[i].draw(g2);
+					entityList.add(npc[i]);
 				}
 			}
-			// player
-			player.draw(g2);
+			
+			for(int i = 0; i<obj.length; i++) {
+				if(obj[i] != null) {
+					entityList.add(obj[i]);
+				}
+			}
+			
+			// sort entity theo thu tu cai nao co y thap hon thi render sau
+			Collections.sort(entityList,new Comparator<Entity>() {
+
+				@Override
+				public int compare(Entity e1, Entity e2) {
+					int result = Integer.compare(e1.y, e2.y);
+					return result;
+				}
+				
+			});
+			// draw entities
+			for(int i = 0; i<entityList.size(); i++) {
+				entityList.get(i).draw(g2);
+			}
+			// empty the list
+				entityList.clear();
+			
+			// UI
 			ui.draw(g2);
 		}
 		

@@ -1,25 +1,15 @@
 package objects;
 
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
+import entity.Entity;
 import main.GamePanel;
 
 
-public class OBJ_Speed extends SuperObject{
-	
-	GamePanel gp;
+public class OBJ_Speed extends Entity{
 	
 	public OBJ_Speed(GamePanel gp){
+		super(gp);
 		name = "Speed";
-		try {
-			image = ImageIO.read(getClass().getResourceAsStream("/objects/speed.png"));
-			uTool.scaleImage(image, gp.tileSize, gp.tileSize);
-		}
-		catch(IOException e) {
-			e.printStackTrace();
-		}
+		down1 = setup("/objects/speed"); // down is default direction
 		collision = true;
 	}
 }

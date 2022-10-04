@@ -4,13 +4,18 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+
+import entity.Entity;
+import objects.OBJ_Heart;
 
 public class UI {
 	GamePanel gp;
 	Graphics2D g2;
 	Font maruMonica;
+	BufferedImage heart_full,heart_half,heart_blank;
 	public String message = "";
 	public boolean gameFinished = false;
 	public int commandNum = 0;
@@ -26,6 +31,12 @@ public class UI {
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
+		
+		// tao cac object cho man hinh choi
+		Entity heart = new OBJ_Heart(gp);
+		heart_full = heart.image;
+		heart_half = heart.image2;
+		heart_blank = heart.image3;
 	}
 	
 	public void draw(Graphics2D g2) {
@@ -39,14 +50,42 @@ public class UI {
 			drawTitleScreen();
 		}
 		// Play State
-		
 		if(gp.gameState == gp.playState) {
-			
+			drawPlayerLife();
 		}
 		// Pause state
 		if(gp.gameState == gp.pauseState) {
+			drawPlayerLife();
 			drawPauseScreen();
 		}
+	}
+
+	public void drawPlayerLife() {
+		int x = gp.tileSize/2;
+		int y = gp.tileSize/2;
+		int i = 0;
+		
+		// draw blank heart
+		while(i<gp.player.maxLife/2) {
+			g2.drawImage(heart_blank,x,y,null);
+			i++;
+			x+= gp.tileSize;
+		}
+		// reset
+		x = gp.tileSize/2;
+		y = gp.tileSize/2;
+		i = 0;
+		//  draw current life
+		while(i<gp.player.life) {
+			g2.drawImage(heart_half,x,y,null);
+			i++;
+			if(i< gp.player.life) {
+				g2.drawImage(heart_full,x,y,null);
+			}
+			i++;
+			x+= gp.tileSize;
+		}
+		
 	}
 
 	public void drawTitleScreen() {

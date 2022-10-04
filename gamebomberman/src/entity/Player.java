@@ -1,5 +1,6 @@
 package entity;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -31,6 +32,10 @@ public class Player extends Entity {
 		y = 300;
 		speed = 4;
 		direction = "down";
+		
+		// player status
+		maxLife = 6;
+		life = maxLife-4;
 	}
 
 	public void getPlayerImage() {
@@ -106,6 +111,14 @@ public class Player extends Entity {
 				spriteCounter = 0;
 			}
 		}
+		
+		if(invincible == true) {
+			invincibleCounter++;
+			if(invincibleCounter > 120) {
+				invincible = false;
+				invincibleCounter = 0;
+			}
+		}
 
 	}
 
@@ -125,7 +138,14 @@ public class Player extends Entity {
 	
 	public void interactNPC(int i) {
 		if(i != 999) {
-			System.out.println("va cham voi quai");
+			if(invincible == false) {
+				speed = 4;
+				life--;
+				invincible = true;
+			}
+			
+			if(life<= 0)
+			setDefaultValues();
 		}
 		
 	}
@@ -159,8 +179,15 @@ public class Player extends Entity {
 				image = right2;
 			break;
 		}
+		
+		// lam mo nhan vat khi bi giet
+		if(invincible == true) {
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+		}
 
 		g2.drawImage(image, x, y, null);
-
+		
+		// reset alpha
+		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 	}
 }

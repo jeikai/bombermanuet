@@ -16,7 +16,7 @@ public class Entity {
 	public int speed;
 	
 	public BufferedImage up1,up2,down1,down2, left1, left2, right1, right2;
-	public String direction;
+	public String direction = "down";
 	
 	public int spriteCounter = 0;
 	public int spriteNum = 1;
@@ -25,6 +25,19 @@ public class Entity {
 	public int solidAreaDefaultX, solidAreaDefaultY;
 	public boolean collisionOn = false;
 	public int actionLockCounter = 0;
+	
+	public BufferedImage image, image2, image3;
+	public String name;
+	public boolean collision = false;
+	public int type ; // 1 = npc , 0 = player
+	
+	//Character status
+	public int maxLife;
+	public int life;
+	public boolean invincible = false;
+	public int invincibleCounter;
+	
+	
 	
 	public Entity(GamePanel gp) {
 		this.gp = gp;
@@ -39,8 +52,17 @@ public class Entity {
 		
 		collisionOn = false;
 		gp.cChecker.checkTile(this);
-		gp.cChecker.checkObject(this, false);
-		gp.cChecker.checkPlayer(this);
+		//gp.cChecker.checkObject(this, false);
+		boolean contactPlayer = gp.cChecker.checkPlayer(this);
+		
+		// if this is monster and contact a player
+		if(this.type == 1 && contactPlayer == true) {
+			if(gp.player.invincible == false) {
+				// give damage 
+				gp.player.life--;
+				gp.player.invincible = true;
+			}
+		}
 		
 		if (collisionOn == false) {
 			switch (direction) {
