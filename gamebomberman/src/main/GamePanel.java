@@ -39,7 +39,10 @@ public class GamePanel extends JPanel implements Runnable {
 	public int gameState;
 	public final int playState = 1;
 	public final int pauseState = 2;
+	public final int titleState = 0;
 	
+	// UI
+	UI ui = new UI(this);
 
 	public GamePanel() {
 		this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -53,7 +56,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public void setupGame() {
 		aSetter.setObject();
 		aSetter.setNPC();
-		gameState = playState;
+		gameState = titleState;
 	}
 
 	public void startGameThread() {
@@ -109,25 +112,35 @@ public class GamePanel extends JPanel implements Runnable {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 		
-		tileM.draw(g2);
+		//Title screen
+		if(gameState == titleState) {
+			ui.draw(g2);
+		}
+		// other screen
+		else {
+			// Tile
+			tileM.draw(g2);
+			
 		
-	
-		//drawing objects on screen except bomb
-		for(int i = 0; i<obj.length; i++) {
-			if(obj[i] != null) {
-				obj[i].draw(g2, this);
+			//drawing objects on screen except bomb
+			for(int i = 0; i<obj.length; i++) {
+				if(obj[i] != null) {
+					obj[i].draw(g2, this);
+				}
 			}
+			
+			// NPC
+			for(int i = 0; i<npc.length; i++) {
+				if(npc[i] != null) {
+					npc[i].draw(g2);
+				}
+			}
+			// player
+			player.draw(g2);
+			ui.draw(g2);
 		}
 		
-		// NPC
-		for(int i = 0; i<npc.length; i++) {
-			if(npc[i] != null) {
-				npc[i].draw(g2);
-			}
-		}
-		// player
-		player.draw(g2);
-		//ui.draw(g2);
+		
 		g2.dispose();
 	}
 }

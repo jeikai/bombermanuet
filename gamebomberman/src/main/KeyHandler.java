@@ -19,30 +19,55 @@ public class KeyHandler implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 
 		int code = e.getKeyCode();
-
-		if (code == KeyEvent.VK_W) {
-			upPressed = true;
-		}
-		if (code == KeyEvent.VK_S) {
-			downPressed = true;
-		}
-		if (code == KeyEvent.VK_A) {
-			leftPressed = true;
-		}
-		if (code == KeyEvent.VK_D) {
-			rightPressed = true;
-		}
-		if (code == KeyEvent.VK_SPACE) {
-			spacePressed = true;
-		}
-		if (code == KeyEvent.VK_ESCAPE) {
-			if(gp.gameState == gp.playState) {
-				gp.gameState = gp.pauseState;
+		// Title screen
+		if(gp.gameState == gp.titleState) {
+			if (code == KeyEvent.VK_S) {
+				gp.ui.commandNum++;
+				if(gp.ui.commandNum > 1) gp.ui.commandNum = 0;
 			}
-			else if(gp.gameState == gp.pauseState) {
-				gp.gameState = gp.playState;
+			if (code == KeyEvent.VK_W) {
+				gp.ui.commandNum--;
+				if(gp.ui.commandNum <0) gp.ui.commandNum = 1;
+			}
+			if(code == KeyEvent.VK_ENTER) {
+				if(gp.ui.commandNum == 0) {
+					gp.gameState = gp.playState;
+					// play music
+				}
+				if(gp.ui.commandNum == 1) {
+					System.exit(0);
+				}
 			}
 		}
+		
+		// in game
+		if(gp.gameState == gp.playState) {
+			if (code == KeyEvent.VK_W) {
+				upPressed = true;
+			}
+			if (code == KeyEvent.VK_S) {
+				downPressed = true;
+			}
+			if (code == KeyEvent.VK_A) {
+				leftPressed = true;
+			}
+			if (code == KeyEvent.VK_D) {
+				rightPressed = true;
+			}
+			if (code == KeyEvent.VK_SPACE) {
+				spacePressed = true;
+			}
+			if (code == KeyEvent.VK_ESCAPE) {
+				if(gp.gameState == gp.playState) {
+					gp.gameState = gp.pauseState;
+				}
+				else if(gp.gameState == gp.pauseState) {
+					gp.gameState = gp.playState;
+				}
+			}
+		}
+		
+		
 	}
 
 	@Override
