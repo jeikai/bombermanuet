@@ -15,18 +15,10 @@ public class SuperObject {
 	public Rectangle solidArea = new Rectangle(0,0,48,48);
 	public int solidAreaDefaultX = 0;
 	public int solidAreaDefaultY = 0;
-	public int timer = 0;
-	public boolean visible = true;
 	UtilityTool uTool = new UtilityTool();
 	
 	public void draw(Graphics2D g2, GamePanel gp) {
-		if(visible)
-			g2.drawImage(image,x,y,gp.tileSize,gp.tileSize,null);
+		g2.drawImage(image, x, y, gp.tileSize, gp.tileSize,null);
 	}
 
-	public void draw(Graphics2D g2, GamePanel gamePanel, int xpos, int ypos) {
-		
-		
-	}
-	
 }

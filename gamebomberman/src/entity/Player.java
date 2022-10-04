@@ -13,11 +13,10 @@ import main.KeyHandler;
 import main.UtilityTool;
 
 public class Player extends Entity {
-	GamePanel gp;
 	KeyHandler keyH;
 
 	public Player(GamePanel gp, KeyHandler keyH) {
-		this.gp = gp;
+		super(gp);
 		this.keyH = keyH;
 
 		solidArea = new Rectangle(8, 8, 32, 32);// nho hon player
@@ -36,29 +35,17 @@ public class Player extends Entity {
 
 	public void getPlayerImage() {
 		
-		up1 = setup("up1");
-		up2 = setup("up2");
-		down1 = setup("down1");
-		down2 = setup("down2");
-		left1 = setup("left1");
-		left2 = setup("left2");
-		right1 = setup("right1");
-		right2 = setup("right2");
+		up1 = setup("/player/up1");
+		up2 = setup("/player/up2");
+		down1 = setup("/player/down1");
+		down2 = setup("/player/down2");
+		left1 = setup("/player/left1");
+		left2 = setup("/player/left2");
+		right1 = setup("/player/right1");
+		right2 = setup("/player/right2");
 	}
 	
-	public BufferedImage setup(String imageName) {
-		UtilityTool uTool = new UtilityTool();
-		BufferedImage image = null;
-		
-		
-		try {
-			image = ImageIO.read(getClass().getResourceAsStream("/player/" + imageName +".png"));
-			image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
-		}catch(IOException e) {
-			e.printStackTrace();
-		}
-		return image;
-	}
+	
 
 	public void update() {
 		if (keyH.spacePressed == true) {
@@ -87,7 +74,11 @@ public class Player extends Entity {
 			// check object collision
 			int objIndex = gp.cChecker.checkObject(this, true);
 			pickUpObject(objIndex);
-
+			
+			// check va cham monster
+			int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
+			interactNPC(npcIndex);
+			
 			if (collisionOn == false) {
 				switch (direction) {
 				case "up":
@@ -130,6 +121,13 @@ public class Player extends Entity {
 				break;
 			}
 		}
+	}
+	
+	public void interactNPC(int i) {
+		if(i != 999) {
+			System.out.println("va cham voi quai");
+		}
+		
 	}
 
 	public void draw(Graphics2D g2) {
