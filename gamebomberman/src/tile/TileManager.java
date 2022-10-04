@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import javax.imageio.ImageIO;
 
 import main.GamePanel;
+import main.UtilityTool;
 
 public class TileManager {
 	
@@ -26,20 +27,23 @@ public class TileManager {
 	}
 	
 	public void getTileImage() {
+	
+		setup(0,"floor",false);
+		setup(1,"wall",true);
+		setup(2,"breakable",true);
+			
+
+	}
+	
+	void setup(int index, String imageName, boolean collision) {
+		UtilityTool uTool = new UtilityTool();
 		try {
-			tile[0] = new Tile();
-			tile[0].image = ImageIO.read(getClass().getResourceAsStream("/maps/floor.png"));
-			
-			tile[1] = new Tile();
-			tile[1].image = ImageIO.read(getClass().getResourceAsStream("/maps/wall.png"));
-			tile[1].collision = true;
-			
-			tile[2] = new Tile();
-			tile[2].image = ImageIO.read(getClass().getResourceAsStream("/maps/breakable.png"));
-			tile[2].collision = true;
-			
+			tile[index] = new Tile();
+			tile[index].image = ImageIO.read(getClass().getResourceAsStream("/maps/" + imageName+".png"));
+			tile[index].image = uTool.scaleImage(tile[index].image,gp.tileSize,gp.tileSize);
+			tile[index].collision = collision;
 		}catch(IOException e) {
-			e.printStackTrace();
+			
 		}
 	}
 	
@@ -86,7 +90,7 @@ public class TileManager {
 			// lay ra so luu trong mapTileNum, in ra cai tuong ung
 			int tileNum = mapTileNum[col][row];
 			
-			g2.drawImage(tile[tileNum].image,x,y,gp.tileSize,gp.tileSize,null);
+			g2.drawImage(tile[tileNum].image,x,y,null);
 			col++;
 			x+= gp.tileSize;
 			

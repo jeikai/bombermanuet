@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import main.GamePanel;
+import main.UtilityTool;
 
 public class SuperObject {
 	public BufferedImage image;
@@ -16,6 +17,7 @@ public class SuperObject {
 	public int solidAreaDefaultY = 0;
 	public int timer = 0;
 	public boolean visible = true;
+	UtilityTool uTool = new UtilityTool();
 	
 	public void draw(Graphics2D g2, GamePanel gp) {
 		if(visible)

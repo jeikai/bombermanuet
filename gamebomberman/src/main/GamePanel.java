@@ -103,7 +103,7 @@ public class GamePanel extends JPanel implements Runnable {
 		
 	
 		//drawing objects on screen except bomb
-		for(int i = 1; i<obj.length; i++) {
+		for(int i = 0; i<obj.length; i++) {
 			if(obj[i] != null) {
 				obj[i].draw(g2, this);
 			}
