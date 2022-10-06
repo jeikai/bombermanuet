@@ -30,7 +30,7 @@ public class TileManager {
 	
 		setup(0,"floor",false);
 		setup(1,"wall",true);
-		setup(2,"breakable",true);
+		setup(2,"floor",false);
 			
 
 	}

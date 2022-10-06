@@ -12,19 +12,26 @@ import javax.imageio.ImageIO;
 import main.GamePanel;
 import main.KeyHandler;
 import main.UtilityTool;
+import objects.OBJ_Bomb;
+import objects.OBJ_Fire;
 
 public class Player extends Entity {
 	KeyHandler keyH;
-
+	// dan bay theo 4 huong
 	public Player(GamePanel gp, KeyHandler keyH) {
 		super(gp);
 		this.keyH = keyH;
-
+		
 		solidArea = new Rectangle(8, 8, 32, 32);// nho hon player
 		solidAreaDefaultX = solidArea.x;
 		solidAreaDefaultY = solidArea.y;
 		setDefaultValues();
 		getPlayerImage();
+		bomb = new OBJ_Bomb(gp);
+		projectileUp = new OBJ_Fire(gp);
+		projectileDown = new OBJ_Fire(gp);
+		projectileLeft = new OBJ_Fire(gp);
+		projectileRight = new OBJ_Fire(gp);
 	}
 
 	public void setDefaultValues() {
@@ -32,14 +39,15 @@ public class Player extends Entity {
 		y = 300;
 		speed = 4;
 		direction = "down";
-		
+
 		// player status
 		maxLife = 6;
-		life = maxLife-4;
+		life = maxLife - 4;
+		bombCount = 1;
 	}
 
 	public void getPlayerImage() {
-		
+
 		up1 = setup("/player/up1");
 		up2 = setup("/player/up2");
 		down1 = setup("/player/down1");
@@ -49,14 +57,8 @@ public class Player extends Entity {
 		right1 = setup("/player/right1");
 		right2 = setup("/player/right2");
 	}
-	
-	
 
 	public void update() {
-		if (keyH.spacePressed == true) {
-
-		}
-
 		if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) {
 
 			if (keyH.upPressed == true) {
@@ -72,17 +74,21 @@ public class Player extends Entity {
 				direction = "right";
 			}
 
-			// check va cham: truyen doi tuong
+			// check va cham voi tuong
 			collisionOn = false;
 			gp.cChecker.checkTile(this);
+
+			// check va cham voi breakable tile
+			gp.cChecker.checkEntity(this, gp.bTile);
 
 			// check object collision
 			int objIndex = gp.cChecker.checkObject(this, true);
 			pickUpObject(objIndex);
-			
-			// check va cham monster
+
+			// check va cham monster va Fire
 			int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
 			interactNPC(npcIndex);
+			
 			
 			if (collisionOn == false) {
 				switch (direction) {
@@ -112,15 +118,58 @@ public class Player extends Entity {
 			}
 		}
 		
-		if(invincible == true) {
+		
+		if (gp.keyH.spacePressed == true && projectileDown.alive == false
+				&& projectileUp.alive == false && projectileLeft.alive == false
+				&& projectileRight.alive == false) {
+			//bomb.set(x, y, direction, true, this);
+			//gp.bombList.add(bomb);
+			// dat vi tri cho projectile
+			bomb.set(x,y,"down",true,this);
+			gp.projectileList.add(bomb);
+			projectileUp.set(x, y, "up", true, this);
+			projectileDown.set(x, y, "down", true, this);
+			projectileLeft.set(x, y, "left", true, this);
+			projectileRight.set(x, y, "right", true, this);
+			// delay thi bom no
+			new java.util.Timer().schedule( 
+			        new java.util.TimerTask() {
+			            @Override
+			            public void run() {
+			                // your code here
+			            	// them vao danh sach cac projectile
+			    			gp.projectileList.add(projectileUp);
+			    			gp.projectileList.add(projectileDown);
+			    			gp.projectileList.add(projectileLeft);
+			    			gp.projectileList.add(projectileRight);
+			            	
+			            }
+			        }, 
+			        //2000 
+			        (bomb.maxLife/60)*1000
+			);
+//			// dat vi tri cho projectile
+//			projectileUp.set(x, y, "up", true, this);
+//			projectileDown.set(x, y, "down", true, this);
+//			projectileLeft.set(x, y, "left", true, this);
+//			projectileRight.set(x, y, "right", true, this);
+//			// them vao danh sach cac projectile
+//			gp.projectileList.add(projectileUp);
+//			gp.projectileList.add(projectileDown);
+//			gp.projectileList.add(projectileLeft);
+//			gp.projectileList.add(projectileRight);
+		}
+
+		// xu ly khi bi va cham voi quai
+		if (invincible == true) {
 			invincibleCounter++;
-			if(invincibleCounter > 120) {
+			if (invincibleCounter > 120) {
 				invincible = false;
 				invincibleCounter = 0;
 			}
 		}
-
 	}
+
 
 	public void pickUpObject(int i) {
 
@@ -135,19 +184,19 @@ public class Player extends Entity {
 			}
 		}
 	}
-	
+
 	public void interactNPC(int i) {
-		if(i != 999) {
-			if(invincible == false) {
-				speed = 4;
-				life--;
-				invincible = true;
-			}
-			
-			if(life<= 0)
+		if (i != 999) {
+		if (invincible == false) {
+			speed = 4;
+			life--;
+			invincible = true;
+		}
+
+		if (life <= 0)
 			setDefaultValues();
 		}
-		
+
 	}
 
 	public void draw(Graphics2D g2) {
@@ -179,14 +228,14 @@ public class Player extends Entity {
 				image = right2;
 			break;
 		}
-		
+
 		// lam mo nhan vat khi bi giet
-		if(invincible == true) {
+		if (invincible == true) {
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
 		}
 
 		g2.drawImage(image, x, y, null);
-		
+
 		// reset alpha
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 	}

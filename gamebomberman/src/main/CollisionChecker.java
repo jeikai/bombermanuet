@@ -1,6 +1,9 @@
 package main;
 
+import java.util.ArrayList;
+
 import entity.Entity;
+import entity.Player;
 
 public class CollisionChecker {
 	GamePanel gp;
@@ -58,6 +61,7 @@ public class CollisionChecker {
 		}
 	}
 	
+	
 	public int checkObject(Entity entity, boolean isPlayer) {
 		
 		int index = 999;
@@ -101,7 +105,7 @@ public class CollisionChecker {
 		
 		return index;
 	}
-	//check va cham voi con quai vat 
+	//check va cham voi quai vat, breakable tile
 	public int checkEntity(Entity entity, Entity[] target) {
 
 		int index = 999;
@@ -179,4 +183,98 @@ public class CollisionChecker {
 		
 		return contactPlayer;
 	}
+	
+	// dan va  cham nguoi
+	public int checkCollidePlayer(Entity entity, Entity target) {
+
+		int index = 999;
+		
+			
+			if(target != null) {
+				// lay vi tri phan va cham cua entity duoc pass vao fuction nay
+				entity.solidArea.x = entity.x + entity.solidArea.x;
+				entity.solidArea.y = entity.y + entity.solidArea.y;
+				// lay vi tri phan va cham cua cac objects 
+				target.solidArea.x = target.x + target.solidArea.x;
+				target.solidArea.y = target.y + target.solidArea.y;
+				
+				switch(entity.direction) {
+				case "up":
+					entity.solidArea.y -= entity.speed;break;
+				case "down":
+					entity.solidArea.y += entity.speed;break;
+				case "left":
+					entity.solidArea.x -= entity.speed;break;
+				case "right":
+					entity.solidArea.x += entity.speed;break;
+				}
+				
+				if(entity.solidArea.intersects(target.solidArea)) {
+					if(target != entity) {
+						entity.alive = false;
+						index = 1;
+					}
+				}
+				// neu ko va cham thi return 999
+				
+				entity.solidArea.x = entity.solidAreaDefaultX;
+				entity.solidArea.y = entity.solidAreaDefaultY;
+				target.solidArea.x = target.solidAreaDefaultX;
+				target.solidArea.y = target.solidAreaDefaultY;
+			}
+		
+		return index;
+	}
+	
+	public void checkTileProjectile(Entity entity) {
+		
+		int entityLeftX = entity.x + entity.solidArea.x;
+		int entityRightX = entity.x + entity.solidArea.x + entity.solidArea.width;
+		int entityTopY = entity.y + entity.solidArea.y;
+		int entityBottomY = entity.y + entity.solidArea.y + entity.solidArea.height;
+		
+		int entityLeftCol = entityLeftX / gp.tileSize;
+		int entityRightCol = entityRightX / gp.tileSize;
+		int entityTopRow = entityTopY / gp.tileSize;
+		int entityBottomRow = entityBottomY / gp.tileSize;
+		
+		int tileNum1, tileNum2;
+		
+		switch(entity.direction) {
+		case "up":
+			entityTopRow = (entityTopY - entity.speed)/ gp.tileSize;
+			tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityTopRow];
+			tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityTopRow];
+			if(gp.tileM.tile[tileNum1].collision == true || gp.tileM.tile[tileNum2].collision == true) {
+				entity.alive = false;
+			}
+			break;
+		case "down":
+			entityBottomRow = (entityBottomY + entity.speed) / gp.tileSize;
+			tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityBottomRow];
+			tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityBottomRow];
+			if(gp.tileM.tile[tileNum1].collision == true || gp.tileM.tile[tileNum2].collision == true) {
+				entity.alive = false;
+			}
+			break;
+		case "left":
+			entityLeftCol = (entityLeftX - entity.speed) / gp.tileSize;
+			tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityTopRow];
+			tileNum2 = gp.tileM.mapTileNum[entityLeftCol][entityBottomRow];
+			if(gp.tileM.tile[tileNum1].collision == true || gp.tileM.tile[tileNum2].collision == true) {
+				entity.alive = false;
+			}
+			break;
+		case "right":
+			entityRightCol = (entityRightX + entity.speed) / gp.tileSize;
+			tileNum1 = gp.tileM.mapTileNum[entityRightCol][entityTopRow];
+			tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityBottomRow];
+			if(gp.tileM.tile[tileNum1].collision == true || gp.tileM.tile[tileNum2].collision == true) {
+				entity.alive = false;
+			}
+			break;
+		}
+		
+	}
+		
 }

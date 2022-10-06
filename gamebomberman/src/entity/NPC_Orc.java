@@ -10,7 +10,10 @@ public class NPC_Orc extends Entity {
 		type = 1;
 		direction = "down";
 		speed = 2;
-		
+		solidArea.width = 32;
+		solidArea.height = 32;
+		solidArea.x = 8;
+		solidArea.y = 8;
 		getImage();
 	}
 

@@ -9,6 +9,7 @@ import javax.imageio.ImageIO;
 
 import main.GamePanel;
 import main.UtilityTool;
+import objects.OBJ_Bomb;
 
 public class Entity {
 	GamePanel gp;
@@ -29,40 +30,52 @@ public class Entity {
 	public BufferedImage image, image2, image3;
 	public String name;
 	public boolean collision = false;
-	public int type ; // 1 = npc , 0 = player
+	public int type ; // 1 = npc , 0 = player; 2 = fire
 	
+	// objects 
+	public Projectile projectileUp,projectileDown,projectileLeft,projectileRight,bomb;
+
 	//Character status
 	public int maxLife;
 	public int life;
 	public boolean invincible = false;
 	public int invincibleCounter;
-	
-	
+	boolean spaceNotPressed = true;
+	// ENTITY STATUS
+    public boolean alive = true;
+    public int bombCount;
+    public boolean fired = false;
 	
 	public Entity(GamePanel gp) {
 		this.gp = gp;
 	}
 	
 	public void setAction() {
-		
 	}
 	
 	public void update() {
 		setAction();
 		
+		
 		collisionOn = false;
 		gp.cChecker.checkTile(this);
 		//gp.cChecker.checkObject(this, false);
 		boolean contactPlayer = gp.cChecker.checkPlayer(this);
-		
-		// if this is monster and contact a player
-		if(this.type == 1 && contactPlayer == true) {
-			if(gp.player.invincible == false) {
-				// give damage 
-				gp.player.life--;
-				gp.player.invincible = true;
+		int contactBreakableTile = gp.cChecker.checkEntity(this, gp.bTile);
+		// if this is monster and contact a player and breakable tile
+		if(this.type == 1) {
+			if(contactPlayer == true) {
+				if(gp.player.invincible == false) {
+					// give damage 
+					gp.player.life--;
+					gp.player.invincible = true;
+				}
+			}
+			if(contactBreakableTile != 999) {
+				collisionOn = true;
 			}
 		}
+		
 		
 		if (collisionOn == false) {
 			switch (direction) {
@@ -136,5 +149,10 @@ public class Entity {
 			e.printStackTrace();
 		}
 		return image;
+	}
+
+	public void updateBomb() {
+		// TODO Auto-generated method stub
+		
 	}
 }
