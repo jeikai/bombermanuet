@@ -1,9 +1,6 @@
 package main;
 
-import java.util.ArrayList;
-
 import entity.Entity;
-import entity.Player;
 
 public class CollisionChecker {
 	GamePanel gp;

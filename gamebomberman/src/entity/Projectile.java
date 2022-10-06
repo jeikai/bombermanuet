@@ -7,13 +7,13 @@ public class Projectile extends Entity {
 
 	protected Entity user;
 
-	public Projectile(GamePanel gamePanel) {
-		super(gamePanel);
+	public Projectile(GamePanel gp) {
+		super(gp);
 		// TODO Auto-generated constructor stub
-		solidArea.x = 0;
-		solidArea.y = 0;
-		solidArea.width = 40;
-		solidArea.height = 40;
+		solidArea.x = gp.tileSize/8;
+		solidArea.y = gp.tileSize/8;
+		solidArea.width = gp.tileSize -8 ;
+		solidArea.height = gp.tileSize -8;
 	}
 
 	public void set(int x, int y, String direction, boolean alive, Entity user) {
@@ -31,13 +31,15 @@ public class Projectile extends Entity {
 		if (user == gp.player) {
 			gp.cChecker.checkTileProjectile(this);
 			
-			int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
-			if (npcIndex != 999) {
-				// giet monster
-				gp.npc[npcIndex] = null;
-				alive = false;
+			// xu ly khi lua cham npc
+			if(name == "Fire") {
+				int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
+				if (npcIndex != 999) {
+					// giet monster
+					gp.npc[npcIndex] = null;
+					alive = false;
+				}
 			}
-			
 			// xu ly khi lua cham tuong
 			if(name=="Fire") {
 				int playerIndex = gp.cChecker.checkCollidePlayer(this,gp.player);

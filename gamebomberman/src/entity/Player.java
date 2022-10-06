@@ -22,7 +22,7 @@ public class Player extends Entity {
 		super(gp);
 		this.keyH = keyH;
 		
-		solidArea = new Rectangle(8, 8, 32, 32);// nho hon player
+		solidArea = new Rectangle(gp.tileSize/8, gp.tileSize/8, gp.tileSize-gp.tileSize/4, gp.tileSize-gp.tileSize/4);// nho hon player
 		solidAreaDefaultX = solidArea.x;
 		solidAreaDefaultY = solidArea.y;
 		setDefaultValues();
@@ -36,7 +36,7 @@ public class Player extends Entity {
 
 	public void setDefaultValues() {
 		x = 100;
-		y = 300;
+		y = 200;
 		speed = 4;
 		direction = "down";
 
@@ -122,15 +122,16 @@ public class Player extends Entity {
 		if (gp.keyH.spacePressed == true && projectileDown.alive == false
 				&& projectileUp.alive == false && projectileLeft.alive == false
 				&& projectileRight.alive == false) {
-			//bomb.set(x, y, direction, true, this);
-			//gp.bombList.add(bomb);
+
 			// dat vi tri cho projectile
-			bomb.set(x,y,"down",true,this);
+			bombXpos = (x + gp.tileSize/2) - ((x + gp.tileSize/2)%gp.tileSize); 
+			bombYpos = (y + gp.tileSize/2) - ((y + gp.tileSize/2)%gp.tileSize);
+			bomb.set(bombXpos,bombYpos,"down",true,this);
 			gp.projectileList.add(bomb);
-			projectileUp.set(x, y, "up", true, this);
-			projectileDown.set(x, y, "down", true, this);
-			projectileLeft.set(x, y, "left", true, this);
-			projectileRight.set(x, y, "right", true, this);
+			projectileUp.set(bombXpos, bombYpos, "up", true, this);
+			projectileDown.set(bombXpos, bombYpos, "down", true, this);
+			projectileLeft.set(bombXpos, bombYpos, "left", true, this);
+			projectileRight.set(bombXpos, bombYpos, "right", true, this);
 			// delay thi bom no
 			new java.util.Timer().schedule( 
 			        new java.util.TimerTask() {
@@ -148,16 +149,6 @@ public class Player extends Entity {
 			        //2000 
 			        (bomb.maxLife/60)*1000
 			);
-//			// dat vi tri cho projectile
-//			projectileUp.set(x, y, "up", true, this);
-//			projectileDown.set(x, y, "down", true, this);
-//			projectileLeft.set(x, y, "left", true, this);
-//			projectileRight.set(x, y, "right", true, this);
-//			// them vao danh sach cac projectile
-//			gp.projectileList.add(projectileUp);
-//			gp.projectileList.add(projectileDown);
-//			gp.projectileList.add(projectileLeft);
-//			gp.projectileList.add(projectileRight);
 		}
 
 		// xu ly khi bi va cham voi quai

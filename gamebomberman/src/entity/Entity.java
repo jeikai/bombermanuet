@@ -21,7 +21,7 @@ public class Entity {
 	
 	public int spriteCounter = 0;
 	public int spriteNum = 1;
-	public Rectangle solidArea = new Rectangle(0,0,48,48);
+	public Rectangle solidArea;
 	
 	public int solidAreaDefaultX, solidAreaDefaultY;
 	public boolean collisionOn = false;
@@ -44,10 +44,11 @@ public class Entity {
 	// ENTITY STATUS
     public boolean alive = true;
     public int bombCount;
-    public boolean fired = false;
+    public int bombXpos, bombYpos;
 	
 	public Entity(GamePanel gp) {
 		this.gp = gp;
+		solidArea =  new Rectangle(0,0,gp.tileSize,gp.tileSize);
 	}
 	
 	public void setAction() {
@@ -149,10 +150,5 @@ public class Entity {
 			e.printStackTrace();
 		}
 		return image;
-	}
-
-	public void updateBomb() {
-		// TODO Auto-generated method stub
-		
 	}
 }
