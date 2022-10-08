@@ -10,7 +10,7 @@ import javax.imageio.ImageIO;
 
 import main.GamePanel;
 import main.UtilityTool;
-
+import java.util.Random;
 public class TileManager {
 	
 	GamePanel gp;
@@ -49,34 +49,30 @@ public class TileManager {
 	
 	public void loadMap() {
 		
-		try {
-			InputStream is = getClass().getResourceAsStream("/maps/map01.txt");
-			BufferedReader br = new BufferedReader(new InputStreamReader(is));
-			
-			int col = 0;
-			int row = 0;
-			
-			while(col < gp.maxScreenCol && row < gp.maxScreenRow) {
-				
-				String line = br.readLine();
-				
-				while(col < gp.maxScreenCol) {
-					String numbers[] = line.split(" ");
-					
-					int num = Integer.parseInt(numbers[col]);
-					
-					mapTileNum[col][row] = num;
-					col++;
-				}
-				if(col == gp.maxScreenCol) {
-					col = 0;
-					row++;
+		for ( int i = 0; i< gp.maxScreenCol; i++) {
+			for ( int j = 0; j< gp.maxScreenRow; j++) {
+				mapTileNum[i][j] = 0;
+			}
+		}
+		for ( int i = 0; i< gp.maxScreenRow; i++) {
+			mapTileNum[0][i] = 1;
+			mapTileNum[gp.maxScreenCol-1][i] = 1;
+		}
+		for ( int i = 0; i< gp.maxScreenCol; i++) {
+			mapTileNum[i][0] = 1;
+			mapTileNum[i][gp.maxScreenRow-1] = 1;
+		}
+		for ( int i = 1; i < gp.maxScreenCol - 1; i++) {
+			for ( int j = 1; j < gp.maxScreenRow - 1; j++) {
+				if ( (i != 1 || j != 1) && (i != 1 || j != 2) && (i != 2 || j != 1)) {
+					Random rd = new Random();
+					int number1 = rd.nextInt(3);
+					if ( number1 == 1) {
+						number1 = 2;
+					}
+					mapTileNum[i][j] = number1;
 				}
 			}
-			br.close();
-			
-		}catch (Exception e) {
-			
 		}
 	}
 	
