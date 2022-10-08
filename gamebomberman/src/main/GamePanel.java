@@ -16,7 +16,7 @@ import entity.Player;
 import tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable {
-	int FPS = 60;
+	int FPS = 30;
 	final int originalTileSize = 16;
 	final int scale = 3;
 
@@ -30,12 +30,14 @@ public class GamePanel extends JPanel implements Runnable {
 	public KeyHandler keyH = new KeyHandler(this);
 	public CollisionChecker cChecker = new CollisionChecker(this);
 	
+	Sound sound = new Sound();
+	
 	// ENTITY va cac OBJECTS
 	public AssetSetter aSetter = new AssetSetter(this);
 	Thread gameThread;
 	public Player player = new Player(this, keyH);
 	public Entity npc[] = new Entity[10];
-	TileManager tileM = new TileManager(this);
+	public TileManager tileM = new TileManager(this);
 	public Entity obj[] = new Entity[10]; 
 	public ArrayList<Entity> entityList = new ArrayList<>();
 	public ArrayList<Entity> projectileList = new ArrayList<>();
@@ -64,6 +66,7 @@ public class GamePanel extends JPanel implements Runnable {
 		aSetter.setNPC();
 		aSetter.setBreakableTile();
 		gameState = titleState;
+		playMusic();
 	}
 
 	public void startGameThread() {
@@ -193,5 +196,13 @@ public class GamePanel extends JPanel implements Runnable {
 		
 		
 		g2.dispose();
+	}
+	public void playMusic() {
+		sound.setFile();
+		sound.play();
+		sound.loop();
+	}
+	public void stopMusic() {
+		sound.stop();
 	}
 }
