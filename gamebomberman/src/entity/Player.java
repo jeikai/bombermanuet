@@ -17,12 +17,20 @@ import objects.OBJ_Fire;
 
 public class Player extends Entity {
 	KeyHandler keyH;
+	int hasKey=0;
+	
+	public final int screenX;
+	public final int screenY;
+	
 	// dan bay theo 4 huong
 	public Player(GamePanel gp, KeyHandler keyH) {
 		super(gp);
 		this.keyH = keyH;
 		
-		solidArea = new Rectangle(gp.tileSize/8, gp.tileSize/8, gp.tileSize-gp.tileSize/4, gp.tileSize-gp.tileSize/4);// nho hon player
+		screenX = gp.screenWidth/2 - (gp.tileSize/2);
+		screenY = gp.screenHeight/2 - (gp.tileSize/2);
+		
+		solidArea = new Rectangle(5, 5, 24, 24);// nho hon player
 		solidAreaDefaultX = solidArea.x;
 		solidAreaDefaultY = solidArea.y;
 		setDefaultValues();
@@ -35,8 +43,8 @@ public class Player extends Entity {
 	}
 
 	public void setDefaultValues() {
-		x = 46;
-		y = 46;
+		x = gp.tileSize * 23;
+		y = gp.tileSize * 21;
 		speed = 4;
 		direction = "down";
 
@@ -122,16 +130,15 @@ public class Player extends Entity {
 		if (gp.keyH.spacePressed == true && projectileDown.alive == false
 				&& projectileUp.alive == false && projectileLeft.alive == false
 				&& projectileRight.alive == false) {
-
+			//bomb.set(x, y, direction, true, this);
+			//gp.bombList.add(bomb);
 			// dat vi tri cho projectile
-			bombXpos = (x + gp.tileSize/2) - ((x + gp.tileSize/2)%gp.tileSize); 
-			bombYpos = (y + gp.tileSize/2) - ((y + gp.tileSize/2)%gp.tileSize);
-			bomb.set(bombXpos,bombYpos,"down",true,this);
+			bomb.set(x,y,"down",true,this);
 			gp.projectileList.add(bomb);
-			projectileUp.set(bombXpos, bombYpos, "up", true, this);
-			projectileDown.set(bombXpos, bombYpos, "down", true, this);
-			projectileLeft.set(bombXpos, bombYpos, "left", true, this);
-			projectileRight.set(bombXpos, bombYpos, "right", true, this);
+			projectileUp.set(x, y, "up", true, this);
+			projectileDown.set(x, y, "down", true, this);
+			projectileLeft.set(x, y, "left", true, this);
+			projectileRight.set(x, y, "right", true, this);
 			// delay thi bom no
 			new java.util.Timer().schedule( 
 			        new java.util.TimerTask() {
@@ -149,10 +156,21 @@ public class Player extends Entity {
 			        //2000 
 			        (bomb.maxLife/60)*1000
 			);
+//			// dat vi tri cho projectile
+//			projectileUp.set(x, y, "up", true, this);
+//			projectileDown.set(x, y, "down", true, this);
+//			projectileLeft.set(x, y, "left", true, this);
+//			projectileRight.set(x, y, "right", true, this);
+//			// them vao danh sach cac projectile
+//			gp.projectileList.add(projectileUp);
+//			gp.projectileList.add(projectileDown);
+//			gp.projectileList.add(projectileLeft);
+//			gp.projectileList.add(projectileRight);
 		}
 
 		// xu ly khi bi va cham voi quai
 		if (invincible == true) {
+			//gp.playSE(5);
 			invincibleCounter++;
 			if (invincibleCounter > 120) {
 				invincible = false;
@@ -169,10 +187,26 @@ public class Player extends Entity {
 
 			switch (name) {
 			case "Speed":
-				speed += 3;
+				gp.playSE(2);
+				speed += 2;
 				gp.obj[i] = null;
 				break;
+			case "Key":
+				gp.playSE(1);
+				hasKey++;
+				gp.obj[i] = null;
+				System.out.println("Key:"+hasKey);
+				break;
+			case "Door":
+				if(hasKey > 0) {
+					gp.playSE(3);
+					gp.obj[i] = null;
+					hasKey--;
+				}
+				System.out.println("Key: "+hasKey);
+				break;
 			}
+			
 		}
 	}
 
@@ -225,7 +259,7 @@ public class Player extends Entity {
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
 		}
 
-		g2.drawImage(image, x, y, null);
+		g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
 
 		// reset alpha
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));

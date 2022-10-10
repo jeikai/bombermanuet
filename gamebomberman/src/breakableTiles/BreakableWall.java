@@ -10,7 +10,7 @@ public class BreakableWall extends BreakableTile{
 		super(gp);
 		this.gp = gp;
 		
-		down1 = setup("/breakableTiles/breakable");
+		down1 = setup("/breakableTiles/breakable_wall");
 		destructible = true;
 	}
 

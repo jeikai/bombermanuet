@@ -10,7 +10,7 @@ import javax.imageio.ImageIO;
 
 import main.GamePanel;
 import main.UtilityTool;
-import java.util.Random;
+
 public class TileManager {
 	
 	GamePanel gp;
@@ -20,10 +20,10 @@ public class TileManager {
 	public TileManager(GamePanel gp) {
 		this.gp =gp;
 		tile = new Tile[10];
-		mapTileNum = new int[gp.maxScreenCol][gp.maxScreenRow];
+		mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
 		
 		getTileImage();
-		loadMap();
+		loadMap("/maps/map01.txt");
 	}
 	
 	public void getTileImage() {
@@ -31,6 +31,9 @@ public class TileManager {
 		setup(0,"floor",false);
 		setup(1,"wall",true);
 		setup(2,"floor",false);
+		setup(3,"earth",false);
+		setup(4,"tree",true);
+		setup(5,"sand",false);
 			
 
 	}
@@ -47,54 +50,60 @@ public class TileManager {
 		}
 	}
 	
-	public void loadMap() {
+	public void loadMap(String filePath) {
 		
-		for ( int i = 0; i< gp.maxScreenCol; i++) {
-			for ( int j = 0; j< gp.maxScreenRow; j++) {
-				mapTileNum[i][j] = 0;
-			}
-		}
-		for ( int i = 0; i< gp.maxScreenRow; i++) {
-			mapTileNum[0][i] = 1;
-			mapTileNum[gp.maxScreenCol-1][i] = 1;
-		}
-		for ( int i = 0; i< gp.maxScreenCol; i++) {
-			mapTileNum[i][0] = 1;
-			mapTileNum[i][gp.maxScreenRow-1] = 1;
-		}
-		for ( int i = 1; i < gp.maxScreenCol - 1; i++) {
-			for ( int j = 1; j < gp.maxScreenRow - 1; j++) {
-				if ( (i != 1 || j != 1) && (i != 1 || j != 2) && (i != 2 || j != 1)) {
-					Random rd = new Random();
-					int number1 = rd.nextInt(3);
-					if ( number1 == 1) {
-						number1 = 2;
-					}
-					mapTileNum[i][j] = number1;
+		try {
+			InputStream is = getClass().getResourceAsStream(filePath);
+			BufferedReader br = new BufferedReader(new InputStreamReader(is));
+			
+			int col = 0;
+			int row = 0;
+			
+			while(col < gp.maxWorldCol && row < gp.maxWorldRow) {
+				
+				String line = br.readLine();
+				
+				while(col < gp.maxWorldCol) {
+					String numbers[] = line.split(" ");
+					
+					int num = Integer.parseInt(numbers[col]);
+					
+					mapTileNum[col][row] = num;
+					col++;
+				}
+				if(col == gp.maxWorldCol) {
+					col = 0;
+					row++;
 				}
 			}
+			br.close();
+			
+		}catch (Exception e) {
+			
 		}
 	}
 	
 	public void draw(Graphics2D g2) {
-		int col = 0;
-		int row = 0;
-		int x = 0;
-		int y = 0;
+		int worldCol = 0;
+		int worldRow = 0;
+
 		
-		while(col < gp.maxScreenCol && row < gp.maxScreenRow) {
+		while(worldCol < gp.maxWorldCol && worldRow < gp.maxWorldRow) {
 			// lay ra so luu trong mapTileNum, in ra cai tuong ung
-			int tileNum = mapTileNum[col][row];
+			int tileNum = mapTileNum[worldCol][worldRow];
 			
-			g2.drawImage(tile[tileNum].image,x,y,null);
-			col++;
-			x+= gp.tileSize;
+			int worldX = worldCol * gp.tileSize;
+			int worldY = worldRow * gp.tileSize;
+			int screenX = worldX - gp.player.x + gp.player.screenX;
+			int screenY = worldY - gp.player.y + gp.player.screenY;
 			
-			if(col == gp.maxScreenCol) {
-				col = 0;
-				x = 0;
-				row++;
-				y+= gp.tileSize;
+			
+			g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+			worldCol++;
+			
+			if(worldCol == gp.maxWorldCol) {
+				worldCol = 0;
+				worldRow++;
 			}
 		}
 	}

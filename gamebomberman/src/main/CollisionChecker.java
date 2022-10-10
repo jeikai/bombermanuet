@@ -1,6 +1,9 @@
 package main;
 
+import java.util.ArrayList;
+
 import entity.Entity;
+import entity.Player;
 
 public class CollisionChecker {
 	GamePanel gp;
@@ -75,13 +78,17 @@ public class CollisionChecker {
 				
 				switch(entity.direction) {
 				case "up":
-					entity.solidArea.y -= entity.speed;break;
+					entity.solidArea.y -= entity.speed;
+					break;
 				case "down":
-					entity.solidArea.y += entity.speed;break;
+					entity.solidArea.y += entity.speed;
+					break;
 				case "left":
-					entity.solidArea.x -= entity.speed;break;
+					entity.solidArea.x -= entity.speed;
+					break;
 				case "right":
-					entity.solidArea.x += entity.speed;break;
+					entity.solidArea.x += entity.speed;
+					break;
 				}
 				
 				if(entity.solidArea.intersects(gp.obj[i].solidArea)) {

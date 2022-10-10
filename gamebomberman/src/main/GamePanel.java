@@ -16,32 +16,41 @@ import entity.Player;
 import tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable {
-	int FPS = 30;
+	int FPS = 60;
 	final int originalTileSize = 16;
 	final int scale = 3;
-
-	public final int tileSize = originalTileSize * scale;
+	public final int tileSize = originalTileSize * scale; 
 
 	public final int maxScreenCol = 16;
 	public final int maxScreenRow = 12;
-	public final int screenWidth = tileSize * maxScreenCol;
-	public final int screenHeight = tileSize * maxScreenRow;
+	public final int screenWidth = tileSize * maxScreenCol; 
+	public final int screenHeight = tileSize * maxScreenRow; 
 
 	public KeyHandler keyH = new KeyHandler(this);
 	public CollisionChecker cChecker = new CollisionChecker(this);
 	
+	
+	//world cam
+	public final int maxWorldCol = 50;
+	public final int maxWorldRow = 50;
+	public final int worldWidth = tileSize * maxWorldCol;
+	public final int worldHeight = tileSize * maxWorldRow;
+	//sound
 	Sound sound = new Sound();
+	
 	
 	// ENTITY va cac OBJECTS
 	public AssetSetter aSetter = new AssetSetter(this);
 	Thread gameThread;
 	public Player player = new Player(this, keyH);
 	public Entity npc[] = new Entity[10];
-	public TileManager tileM = new TileManager(this);
+	TileManager tileM = new TileManager(this);
 	public Entity obj[] = new Entity[10]; 
 	public ArrayList<Entity> entityList = new ArrayList<>();
 	public ArrayList<Entity> projectileList = new ArrayList<>();
 	public BreakableTile bTile[] = new BreakableTile[100];
+	
+	
 	
 	// game state
 	public int gameState;
@@ -62,12 +71,12 @@ public class GamePanel extends JPanel implements Runnable {
 	}
 	
 	public void setupGame() {
-		aSetter.setBreakableTile();
 		aSetter.setObject();
 		aSetter.setNPC();
-		
+		aSetter.setBreakableTile();
 		gameState = titleState;
-		playMusic();
+		
+		playMusic(0);
 	}
 
 	public void startGameThread() {
@@ -198,12 +207,22 @@ public class GamePanel extends JPanel implements Runnable {
 		
 		g2.dispose();
 	}
-	public void playMusic() {
-		sound.setFile();
+	public void playMusic(int i) {
+		
+		sound.setFile(i);
 		sound.play();
 		sound.loop();
+		
 	}
 	public void stopMusic() {
+		
 		sound.stop();
 	}
+	public void playSE(int i) {
+		sound.setFile(i);
+		sound.play();
+	}
+	
+	
+	
 }

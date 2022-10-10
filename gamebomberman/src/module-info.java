@@ -2,9 +2,9 @@
  * 
  */
 /**
- * @author ACER
+ * @author truon
  *
  */
-module gamebomberman {
+module bombermain {
 	requires java.desktop;
 }
