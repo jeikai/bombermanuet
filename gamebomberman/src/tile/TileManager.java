@@ -10,7 +10,7 @@ import javax.imageio.ImageIO;
 
 import main.GamePanel;
 import main.UtilityTool;
-
+import java.util.Random;
 public class TileManager {
 	
 	GamePanel gp;
@@ -31,9 +31,6 @@ public class TileManager {
 		setup(0,"floor",false);
 		setup(1,"wall",true);
 		setup(2,"floor",false);
-		setup(3,"earth",false);
-		setup(4,"tree",true);
-		setup(5,"sand",false);
 			
 
 	}
@@ -76,11 +73,26 @@ public class TileManager {
 					row++;
 				}
 			}
+			
+//			for ( int i = 1; i < gp.maxWorldCol - 1; i++) {
+//				for ( int j = 1; j < gp.maxWorldRow - 1; j++) {
+//					if ( (i != 1 || j != 1) && (i != 1 || j != 2) && (i != 2 || j != 1)) {
+//						Random rd = new Random();
+//						int number1 = rd.nextInt(3);
+//						if ( number1 == 1) {
+//							number1 = 2;
+//						}
+//						mapTileNum[i][j] = number1;
+//					}
+//				}
+//			}
+			
 			br.close();
 			
 		}catch (Exception e) {
 			
 		}
+		
 	}
 	
 	public void draw(Graphics2D g2) {
@@ -94,16 +106,23 @@ public class TileManager {
 			
 			int worldX = worldCol * gp.tileSize;
 			int worldY = worldRow * gp.tileSize;
-			int screenX = worldX - gp.player.x + gp.player.screenX;
-			int screenY = worldY - gp.player.y + gp.player.screenY;
+			int screenX = worldX - gp.player.worldX + gp.player.screenX;
+			int screenY = worldY - gp.player.worldY + gp.player.screenY;
 			
+			if(worldX + gp.tileSize >gp.player.worldX - gp.player.screenX &&
+					worldX-gp.tileSize < gp.player.worldX + gp.player.screenX &&
+					worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
+					worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
+				
+				g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+			}
 			
-			g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
 			worldCol++;
 			
 			if(worldCol == gp.maxWorldCol) {
 				worldCol = 0;
 				worldRow++;
+
 			}
 		}
 	}

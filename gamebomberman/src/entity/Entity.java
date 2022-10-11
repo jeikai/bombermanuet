@@ -13,7 +13,7 @@ import objects.OBJ_Bomb;
 
 public class Entity {
 	GamePanel gp;
-	public int x,y;
+	public int worldX,worldY;
 	public int speed;
 	
 	public BufferedImage up1,up2,down1,down2, left1, left2, right1, right2;
@@ -21,7 +21,7 @@ public class Entity {
 	
 	public int spriteCounter = 0;
 	public int spriteNum = 1;
-	public Rectangle solidArea = new Rectangle(0,0,15,15);
+	public Rectangle solidArea;
 	
 	public int solidAreaDefaultX, solidAreaDefaultY;
 	public boolean collisionOn = false;
@@ -44,10 +44,11 @@ public class Entity {
 	// ENTITY STATUS
     public boolean alive = true;
     public int bombCount;
-    public boolean fired = false;
+    public int bombXpos, bombYpos;
 	
 	public Entity(GamePanel gp) {
 		this.gp = gp;
+		solidArea =  new Rectangle(0,0,gp.tileSize,gp.tileSize);
 	}
 	
 	public void setAction() {
@@ -80,16 +81,16 @@ public class Entity {
 		if (collisionOn == false) {
 			switch (direction) {
 			case "up":
-				y -= speed;
+				worldY -= speed;
 				break;
 			case "down":
-				y += speed;
+				worldY += speed;
 				break;
 			case "left":
-				x -= speed;
+				worldX -= speed;
 				break;
 			case "right":
-				x += speed;
+				worldX += speed;
 				break;
 			}
 		}
@@ -134,7 +135,17 @@ public class Entity {
 			break;
 		}
 		
-		g2.drawImage(image, x, y, gp.tileSize, gp.tileSize,null);
+		int screenX = worldX - gp.player.worldX + gp.player.screenX;
+		int screenY = worldY - gp.player.worldY + gp.player.screenY;
+		
+		if(worldX + gp.tileSize >gp.player.worldX - gp.player.screenX &&
+				worldX-gp.tileSize < gp.player.worldX + gp.player.screenX &&
+				worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
+				worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
+			
+			g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize,null);
+		}
+		
 	}
 	
 	public BufferedImage setup(String imagePath) {
@@ -149,10 +160,5 @@ public class Entity {
 			e.printStackTrace();
 		}
 		return image;
-	}
-
-	public void updateBomb() {
-		// TODO Auto-generated method stub
-		
 	}
 }
