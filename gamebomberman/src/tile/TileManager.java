@@ -33,11 +33,7 @@ public class TileManager {
 		setup(0,"floor",false);
 		setup(1,"wall",true);
 		setup(2,"floor",false);
-<<<<<<< HEAD
 		setup(3,"hut",true);	
-=======
-			
->>>>>>> d0ddf5b536046912bdfb800eaaff24582626f31f
 
 	}
 	

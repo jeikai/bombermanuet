@@ -36,11 +36,7 @@ public class Projectile extends Entity {
 				int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
 				if (npcIndex != 999) {
 					// giet monster
-<<<<<<< HEAD
 					gp.npc[gp.currentMap][npcIndex] = null;
-=======
-					gp.npc[npcIndex] = null;
->>>>>>> d0ddf5b536046912bdfb800eaaff24582626f31f
 					alive = false;
 				}
 			}

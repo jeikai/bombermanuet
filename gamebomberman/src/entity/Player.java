@@ -45,17 +45,11 @@ public class Player extends Entity {
 	}
 
 	public void setDefaultValues() {
-<<<<<<< HEAD
 //		worldX = gp.tileSize * 2;
 //		worldY = gp.tileSize * 4;
 		worldX = gp.tileSize * 8;
 		worldY = gp.tileSize * 8;
 		speed = 10;
-=======
-		worldX = gp.tileSize * 2;
-		worldY = gp.tileSize * 4;
-		speed = 4;
->>>>>>> d0ddf5b536046912bdfb800eaaff24582626f31f
 		direction = "down";
 
 		// player status
@@ -188,7 +182,6 @@ public class Player extends Entity {
 			switch (name) {
 			case "Speed":
 				speed += 1;
-<<<<<<< HEAD
 				gp.obj[gp.currentMap][i] = null;//FIXED
 				break;
 			case "Key":
@@ -203,10 +196,6 @@ public class Player extends Entity {
 				break;
 			case "Tent":
 				gp.currentMap++;
-=======
-				gp.obj[i] = null;
-				break;
->>>>>>> d0ddf5b536046912bdfb800eaaff24582626f31f
 			}
 		}
 	}

@@ -2,6 +2,8 @@ package main;
 
 import breakableTiles.BreakableWall;
 import entity.NPC_Orc;
+import objects.OBJ_Door;
+import objects.OBJ_Key;
 import objects.OBJ_Speed;
 import objects.OBJ_Tent;
 
@@ -14,7 +16,6 @@ public class AssetSetter {
 	}
 	
 	public void setObject() {
-<<<<<<< HEAD
 		if( gp.currentMap==0) {
 			gp.obj[0][1] = new OBJ_Speed(gp);
 			gp.obj[0][1].worldX = 9 * gp.tileSize;
@@ -125,26 +126,6 @@ public class AssetSetter {
 			gp.npc[3][1].worldY = gp.tileSize * 8;
 			}
 		
-=======
-		gp.obj[1] = new OBJ_Speed(gp);
-		gp.obj[1].worldX = 9 * gp.tileSize;
-		gp.obj[1].worldY = 9 * gp.tileSize;
-		gp.obj[2] = new OBJ_Speed(gp);
-		gp.obj[2].worldX = 6 * gp.tileSize;
-		gp.obj[2].worldY = 4 * gp.tileSize;
-		gp.obj[3] = new OBJ_Speed(gp);
-		gp.obj[3].worldX = 3 * gp.tileSize;
-		gp.obj[3].worldY = 5 * gp.tileSize;
-	}
-	
-	public void setNPC() {
-		gp.npc[0] = new NPC_Orc(gp);
-		gp.npc[0].worldX = gp.tileSize*3;
-		gp.npc[0].worldY = gp.tileSize * 7;
-		gp.npc[1] = new NPC_Orc(gp);
-		gp.npc[1].worldX = gp.tileSize*2;
-		gp.npc[1].worldY = gp.tileSize * 7;
->>>>>>> d0ddf5b536046912bdfb800eaaff24582626f31f
 	}
 	
 	public void setBreakableTile(){
@@ -160,15 +141,9 @@ public class AssetSetter {
 			int tileNum = gp.tileM.mapTileNum[gp.currentMap][col][row];
 			
 			if(tileNum == 2) {
-<<<<<<< HEAD
 				gp.bTile[gp.currentMap][i] = new BreakableWall(gp);
 				gp.bTile[gp.currentMap][i].worldX = gp.tileSize * col;
 				gp.bTile[gp.currentMap][i].worldY = gp.tileSize * row;
-=======
-				gp.bTile[i] = new BreakableWall(gp);
-				gp.bTile[i].worldX = gp.tileSize * col;
-				gp.bTile[i].worldY = gp.tileSize * row;
->>>>>>> d0ddf5b536046912bdfb800eaaff24582626f31f
 				i++;
 			}
 			col++;

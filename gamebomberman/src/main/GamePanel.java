@@ -33,40 +33,24 @@ public class GamePanel extends JPanel implements Runnable {
 	public final int worldWidth = tileSize * maxWorldCol;
 	public final int worldHeight = tileSize * maxWorldRow;
 
-<<<<<<< HEAD
 	//map setting
 	public final int maxMap = 10;
 	public int currentMap = 2;
 	public KeyHandler keyH = new KeyHandler(this);
 	public CollisionChecker cChecker = new CollisionChecker(this);
 	
-=======
-	
-	public KeyHandler keyH = new KeyHandler(this);
-	public CollisionChecker cChecker = new CollisionChecker(this);
-	
->>>>>>> d0ddf5b536046912bdfb800eaaff24582626f31f
 	Sound sound = new Sound();
 	
 	// ENTITY va cac OBJECTS
 	public AssetSetter aSetter = new AssetSetter(this);
 	Thread gameThread;
 	public Player player = new Player(this, keyH);
-<<<<<<< HEAD
 	public Entity npc[][] = new Entity[maxMap][10];
 	public TileManager tileM = new TileManager(this);
 	public Entity obj[][] = new Entity[maxMap][10]; 
 	public ArrayList<Entity> entityList = new ArrayList<>();
 	public ArrayList<Entity> projectileList = new ArrayList<>();
 	public BreakableTile bTile[][] = new BreakableTile[maxMap][10000000];
-=======
-	public Entity npc[] = new Entity[10];
-	public TileManager tileM = new TileManager(this);
-	public Entity obj[] = new Entity[10]; 
-	public ArrayList<Entity> entityList = new ArrayList<>();
-	public ArrayList<Entity> projectileList = new ArrayList<>();
-	public BreakableTile bTile[] = new BreakableTile[10000000];
->>>>>>> d0ddf5b536046912bdfb800eaaff24582626f31f
 	
 	// game state
 	public int gameState;
