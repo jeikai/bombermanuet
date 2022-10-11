@@ -57,7 +57,6 @@ public class Player extends Entity {
 		life = maxLife - 4;
 		bombCount = 1;
 	}
-
 	public void getPlayerImage() {
 
 		up1 = setup("/player/up1");
@@ -171,6 +170,9 @@ public class Player extends Entity {
 				invincibleCounter = 0;
 			}
 		}
+		if (life <= 0) {
+			gp.gameState = gp.gameOverState;
+		}
 	}
 
 
@@ -208,9 +210,7 @@ public class Player extends Entity {
 			invincible = true;
 		}
 
-		if (life <= 0)
-			setDefaultValues();
-		}
+	}
 
 	}
 
