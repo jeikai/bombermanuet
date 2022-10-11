@@ -5,6 +5,6 @@
  * @author truon
  *
  */
-module bombermain {
+module gamebombermanmain {
 	requires java.desktop;
 }

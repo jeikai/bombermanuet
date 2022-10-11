@@ -17,11 +17,12 @@ import objects.OBJ_Fire;
 
 public class Player extends Entity {
 	KeyHandler keyH;
-	int hasKey=0;
 	
 	public final int screenX;
 	public final int screenY;
 	
+	//Key 
+	int hasKey=0;
 	// dan bay theo 4 huong
 	public Player(GamePanel gp, KeyHandler keyH) {
 		super(gp);
@@ -30,7 +31,8 @@ public class Player extends Entity {
 		screenX = gp.screenWidth/2 - (gp.tileSize/2);
 		screenY = gp.screenHeight/2 - (gp.tileSize/2);
 		
-		solidArea = new Rectangle(5, 5, 24, 24);// nho hon player
+		
+		solidArea = new Rectangle(gp.tileSize/8, gp.tileSize/8, gp.tileSize-gp.tileSize/4, gp.tileSize-gp.tileSize/4);// nho hon player
 		solidAreaDefaultX = solidArea.x;
 		solidAreaDefaultY = solidArea.y;
 		setDefaultValues();
@@ -43,9 +45,17 @@ public class Player extends Entity {
 	}
 
 	public void setDefaultValues() {
-		x = gp.tileSize * 23;
-		y = gp.tileSize * 21;
+<<<<<<< HEAD
+//		worldX = gp.tileSize * 2;
+//		worldY = gp.tileSize * 4;
+		worldX = gp.tileSize * 8;
+		worldY = gp.tileSize * 8;
+		speed = 10;
+=======
+		worldX = gp.tileSize * 2;
+		worldY = gp.tileSize * 4;
 		speed = 4;
+>>>>>>> d0ddf5b536046912bdfb800eaaff24582626f31f
 		direction = "down";
 
 		// player status
@@ -101,16 +111,16 @@ public class Player extends Entity {
 			if (collisionOn == false) {
 				switch (direction) {
 				case "up":
-					y -= speed;
+					worldY -= speed;
 					break;
 				case "down":
-					y += speed;
+					worldY += speed;
 					break;
 				case "left":
-					x -= speed;
+					worldX -= speed;
 					break;
 				case "right":
-					x += speed;
+					worldX += speed;
 					break;
 				}
 			}
@@ -130,15 +140,16 @@ public class Player extends Entity {
 		if (gp.keyH.spacePressed == true && projectileDown.alive == false
 				&& projectileUp.alive == false && projectileLeft.alive == false
 				&& projectileRight.alive == false) {
-			//bomb.set(x, y, direction, true, this);
-			//gp.bombList.add(bomb);
+
 			// dat vi tri cho projectile
-			bomb.set(x,y,"down",true,this);
+			bombXpos = (worldX + gp.tileSize/2) - ((worldX + gp.tileSize/2)%gp.tileSize); 
+			bombYpos = (worldY + gp.tileSize/2) - ((worldY + gp.tileSize/2)%gp.tileSize);
+			bomb.set(bombXpos,bombYpos,"down",true,this);
 			gp.projectileList.add(bomb);
-			projectileUp.set(x, y, "up", true, this);
-			projectileDown.set(x, y, "down", true, this);
-			projectileLeft.set(x, y, "left", true, this);
-			projectileRight.set(x, y, "right", true, this);
+			projectileUp.set(bombXpos, bombYpos, "up", true, this);
+			projectileDown.set(bombXpos, bombYpos, "down", true, this);
+			projectileLeft.set(bombXpos, bombYpos, "left", true, this);
+			projectileRight.set(bombXpos, bombYpos, "right", true, this);
 			// delay thi bom no
 			new java.util.Timer().schedule( 
 			        new java.util.TimerTask() {
@@ -154,23 +165,12 @@ public class Player extends Entity {
 			            }
 			        }, 
 			        //2000 
-			        (bomb.maxLife/60)*1000
+			        (bomb.maxLife/gp.FPS)*1000
 			);
-//			// dat vi tri cho projectile
-//			projectileUp.set(x, y, "up", true, this);
-//			projectileDown.set(x, y, "down", true, this);
-//			projectileLeft.set(x, y, "left", true, this);
-//			projectileRight.set(x, y, "right", true, this);
-//			// them vao danh sach cac projectile
-//			gp.projectileList.add(projectileUp);
-//			gp.projectileList.add(projectileDown);
-//			gp.projectileList.add(projectileLeft);
-//			gp.projectileList.add(projectileRight);
 		}
 
 		// xu ly khi bi va cham voi quai
 		if (invincible == true) {
-			//gp.playSE(5);
 			invincibleCounter++;
 			if (invincibleCounter > 120) {
 				invincible = false;
@@ -183,30 +183,31 @@ public class Player extends Entity {
 	public void pickUpObject(int i) {
 
 		if (i != 999) {
-			String name = gp.obj[i].name;
+			String name = gp.obj[gp.currentMap][i].name;//FIXED
 
 			switch (name) {
 			case "Speed":
-				gp.playSE(2);
-				speed += 2;
-				gp.obj[i] = null;
+				speed += 1;
+<<<<<<< HEAD
+				gp.obj[gp.currentMap][i] = null;//FIXED
 				break;
 			case "Key":
-				gp.playSE(1);
 				hasKey++;
-				gp.obj[i] = null;
-				System.out.println("Key:"+hasKey);
+				gp.obj[gp.currentMap][i] = null;//FIXED
 				break;
 			case "Door":
 				if(hasKey > 0) {
-					gp.playSE(3);
-					gp.obj[i] = null;
+					gp.obj[gp.currentMap][i] = null;//FIXED
 					hasKey--;
 				}
-				System.out.println("Key: "+hasKey);
 				break;
+			case "Tent":
+				gp.currentMap++;
+=======
+				gp.obj[i] = null;
+				break;
+>>>>>>> d0ddf5b536046912bdfb800eaaff24582626f31f
 			}
-			
 		}
 	}
 

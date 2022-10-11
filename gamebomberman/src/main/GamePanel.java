@@ -16,41 +16,57 @@ import entity.Player;
 import tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable {
-	int FPS = 60;
+	public int FPS = 60;
 	final int originalTileSize = 16;
 	final int scale = 3;
-	public final int tileSize = originalTileSize * scale; 
+
+	public final int tileSize = originalTileSize * scale;
 
 	public final int maxScreenCol = 16;
 	public final int maxScreenRow = 12;
-	public final int screenWidth = tileSize * maxScreenCol; 
-	public final int screenHeight = tileSize * maxScreenRow; 
-
-	public KeyHandler keyH = new KeyHandler(this);
-	public CollisionChecker cChecker = new CollisionChecker(this);
+	public final int screenWidth = tileSize * maxScreenCol;
+	public final int screenHeight = tileSize * maxScreenRow;
 	
-	
-	//world cam
+	// world setting
 	public final int maxWorldCol = 50;
 	public final int maxWorldRow = 50;
 	public final int worldWidth = tileSize * maxWorldCol;
 	public final int worldHeight = tileSize * maxWorldRow;
-	//sound
-	Sound sound = new Sound();
+
+<<<<<<< HEAD
+	//map setting
+	public final int maxMap = 10;
+	public int currentMap = 2;
+	public KeyHandler keyH = new KeyHandler(this);
+	public CollisionChecker cChecker = new CollisionChecker(this);
 	
+=======
+	
+	public KeyHandler keyH = new KeyHandler(this);
+	public CollisionChecker cChecker = new CollisionChecker(this);
+	
+>>>>>>> d0ddf5b536046912bdfb800eaaff24582626f31f
+	Sound sound = new Sound();
 	
 	// ENTITY va cac OBJECTS
 	public AssetSetter aSetter = new AssetSetter(this);
 	Thread gameThread;
 	public Player player = new Player(this, keyH);
+<<<<<<< HEAD
+	public Entity npc[][] = new Entity[maxMap][10];
+	public TileManager tileM = new TileManager(this);
+	public Entity obj[][] = new Entity[maxMap][10]; 
+	public ArrayList<Entity> entityList = new ArrayList<>();
+	public ArrayList<Entity> projectileList = new ArrayList<>();
+	public BreakableTile bTile[][] = new BreakableTile[maxMap][10000000];
+=======
 	public Entity npc[] = new Entity[10];
-	TileManager tileM = new TileManager(this);
+	public TileManager tileM = new TileManager(this);
 	public Entity obj[] = new Entity[10]; 
 	public ArrayList<Entity> entityList = new ArrayList<>();
 	public ArrayList<Entity> projectileList = new ArrayList<>();
-	public BreakableTile bTile[] = new BreakableTile[100];
-	
-	
+	public BreakableTile bTile[] = new BreakableTile[10000000];
+>>>>>>> d0ddf5b536046912bdfb800eaaff24582626f31f
 	
 	// game state
 	public int gameState;
@@ -60,7 +76,9 @@ public class GamePanel extends JPanel implements Runnable {
 	
 	// UI
 	UI ui = new UI(this);
-
+	
+	//Event
+//	public EventHandler eHandler = new EventHandler(this);
 	public GamePanel() {
 		this.setPreferredSize(new Dimension(screenWidth, screenHeight));
 		this.setBackground(Color.black);
@@ -71,12 +89,12 @@ public class GamePanel extends JPanel implements Runnable {
 	}
 	
 	public void setupGame() {
+		aSetter.setBreakableTile();
 		aSetter.setObject();
 		aSetter.setNPC();
-		aSetter.setBreakableTile();
-		gameState = titleState;
 		
-		playMusic(0);
+		gameState = titleState;
+		playMusic();
 	}
 
 	public void startGameThread() {
@@ -116,9 +134,9 @@ public class GamePanel extends JPanel implements Runnable {
 			player.update();
 			
 			//NPC
-			for(int i = 0;i<npc.length; i++) {
-				if(npc[i] != null) {
-					npc[i].update();
+			for(int i = 0;i<npc[1].length; i++) {
+				if(npc[currentMap][i] != null) {
+					npc[currentMap][i].update();
 				}
 			}
 		}
@@ -134,9 +152,9 @@ public class GamePanel extends JPanel implements Runnable {
 			}	
 		}
 		
-		for(int i = 0; i<bTile.length; i++) {
-			if(bTile[i] != null) {
-				bTile[i].update();
+		for(int i = 0; i<bTile[1].length; i++) {
+			if(bTile[currentMap][i] != null) {
+				bTile[currentMap][i].update();
 			}
 		}
 		
@@ -157,23 +175,23 @@ public class GamePanel extends JPanel implements Runnable {
 		else {
 			// Tile
 			tileM.draw(g2);
-			for(int i = 0; i<bTile.length; i++) {
-				if(bTile[i] != null) {
-					bTile[i].draw(g2);
+			for(int i = 0; i<bTile[1].length; i++) {
+				if(bTile[currentMap][i] != null) {
+					bTile[currentMap][i].draw(g2);
 				}
 			}
 			
 			// add entity to list
 			entityList.add(player);
-			for(int i = 0; i<npc.length; i++) {
-				if(npc[i] != null) {
-					entityList.add(npc[i]);
+			for(int i = 0; i<npc[1].length; i++) {
+				if(npc[currentMap][i] != null) {
+					entityList.add(npc[currentMap][i]);
 				}
 			}
 			
-			for(int i = 0; i<obj.length; i++) {
-				if(obj[i] != null) {
-					entityList.add(obj[i]);
+			for(int i = 0; i<obj[1].length; i++) {
+				if(obj[currentMap][i] != null) {
+					entityList.add(obj[currentMap][i]);
 				}
 			}
 			for(int i = 0; i<projectileList.size();i++) {
@@ -188,7 +206,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 				@Override
 				public int compare(Entity e1, Entity e2) {
-					int result = Integer.compare(e1.y, e2.y);
+					int result = Integer.compare(e1.worldY, e2.worldY);
 					return result;
 				}
 				
@@ -207,22 +225,12 @@ public class GamePanel extends JPanel implements Runnable {
 		
 		g2.dispose();
 	}
-	public void playMusic(int i) {
-		
-		sound.setFile(i);
+	public void playMusic() {
+		sound.setFile();
 		sound.play();
 		sound.loop();
-		
 	}
 	public void stopMusic() {
-		
 		sound.stop();
 	}
-	public void playSE(int i) {
-		sound.setFile(i);
-		sound.play();
-	}
-	
-	
-	
 }

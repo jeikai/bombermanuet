@@ -7,18 +7,18 @@ public class Projectile extends Entity {
 
 	protected Entity user;
 
-	public Projectile(GamePanel gamePanel) {
-		super(gamePanel);
+	public Projectile(GamePanel gp) {
+		super(gp);
 		// TODO Auto-generated constructor stub
-		solidArea.x = 0;
-		solidArea.y = 0;
-		solidArea.width =40;
-		solidArea.height = 40;
+		solidArea.x = gp.tileSize/8;
+		solidArea.y = gp.tileSize/8;
+		solidArea.width = gp.tileSize -8 ;
+		solidArea.height = gp.tileSize -8;
 	}
 
-	public void set(int x, int y, String direction, boolean alive, Entity user) {
-		this.x = x;
-		this.y = y;
+	public void set(int worldX, int worldY, String direction, boolean alive, Entity user) {
+		this.worldX = worldX;
+		this.worldY = worldY;
 		this.direction = direction;
 		this.alive = alive;
 		this.user = user;
@@ -31,13 +31,19 @@ public class Projectile extends Entity {
 		if (user == gp.player) {
 			gp.cChecker.checkTileProjectile(this);
 			
-			int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
-			if (npcIndex != 999) {
-				// giet monster
-				gp.npc[npcIndex] = null;
-				alive = false;
+			// xu ly khi lua cham npc
+			if(name == "Fire") {
+				int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
+				if (npcIndex != 999) {
+					// giet monster
+<<<<<<< HEAD
+					gp.npc[gp.currentMap][npcIndex] = null;
+=======
+					gp.npc[npcIndex] = null;
+>>>>>>> d0ddf5b536046912bdfb800eaaff24582626f31f
+					alive = false;
+				}
 			}
-			
 			// xu ly khi lua cham tuong
 			if(name=="Fire") {
 				int playerIndex = gp.cChecker.checkCollidePlayer(this,gp.player);
@@ -54,15 +60,11 @@ public class Projectile extends Entity {
 				}
 			}
 			
-			if(name!= "Bomb") {
-				int bTileIndex = gp.cChecker.checkEntity(this, gp.bTile);
-				if (bTileIndex != 999) {
-					this.alive = false;
-					damageBreakableTile(bTileIndex);
-				}
+			int bTileIndex = gp.cChecker.checkEntity(this, gp.bTile);
+			if (bTileIndex != 999) {
+				this.alive = false;
+				damageBreakableTile(bTileIndex);
 			}
-			
-			
 			
 		}
 		if (user != gp.player) {
@@ -71,16 +73,16 @@ public class Projectile extends Entity {
 		if(name == "Fire") {
 			switch (direction) {
 			case "up":
-				y -= speed;
+				worldY -= speed;
 				break;
 			case "down":
-				y += speed;
+				worldY += speed;
 				break;
 			case "left":
-				x -= speed;
+				worldX -= speed;
 				break;
 			case "right":
-				x += speed;
+				worldX += speed;
 				break;
 			}
 		}
@@ -104,9 +106,9 @@ public class Projectile extends Entity {
 
 	public void damageBreakableTile(int i) {
 
-		if (i != 999 && gp.bTile[i].destructible == true) {
+		if (i != 999 && gp.bTile[gp.currentMap][i].destructible == true) {
 
-			gp.bTile[i] = null;
+			gp.bTile[gp.currentMap][i] = null;
 		}
 	}
 
