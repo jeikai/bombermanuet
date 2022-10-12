@@ -65,6 +65,11 @@ public class KeyHandler implements KeyListener {
 
 				}
 			}
+			if (gp.gameState == gp.playState) {
+				if(code == KeyEvent.VK_M) {
+					gp.gameState = gp.mapState;
+				}
+			}
 		}
 		//GAME OVER STATE
 		if (gp.gameState == gp.gameOverState) {
@@ -94,7 +99,10 @@ public class KeyHandler implements KeyListener {
 		if(gp.gameState == gp.gameWinState) {
 			gameWinState(code);
 		}
-		
+		//MAP STATE
+				else if (gp.gameState == gp.mapState) {
+					mapState(code);
+				}
 		
 	}
 	public void gameOverState(int code) {
@@ -147,6 +155,11 @@ public class KeyHandler implements KeyListener {
 				System.exit(0);
 			}
 			
+		}
+	}
+	public void mapState(int code) {
+		if(code == KeyEvent.VK_H) {
+			gp.gameState = gp.playState;
 		}
 	}
 	@Override

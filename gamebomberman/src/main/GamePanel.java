@@ -15,6 +15,7 @@ import breakableTiles.BreakableTile;
 import entity.Entity;
 import entity.Player;
 import environment.EnvironmentManager;
+import tile.Map;
 import tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable {
@@ -43,6 +44,8 @@ public class GamePanel extends JPanel implements Runnable {
 	
 	Sound sound = new Sound();
 	
+	Map map = new Map(this); 
+
 	// ENTITY va cac OBJECTS
 	public AssetSetter aSetter = new AssetSetter(this);
 	Thread gameThread;
@@ -64,6 +67,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public final int gameOverState = 4;
 	public final int dialogueState = 6;
 	public final int gameWinState = 5;
+	public final int mapState = 7;
 	// UI
 	public UI ui = new UI(this);
 	
@@ -163,6 +167,9 @@ public class GamePanel extends JPanel implements Runnable {
 		
 		if(gameState == pauseState) {
 		}
+		if(gameState == mapState) {
+			
+		}
 	}
 
 	public void paintComponent(Graphics g) {
@@ -173,6 +180,10 @@ public class GamePanel extends JPanel implements Runnable {
 		//Title screen
 		if(gameState == titleState) {
 			ui.draw(g2);
+		}
+		//map screen
+		else if (gameState == mapState) {
+			map.drawFullMapScreen(g2);
 		}
 		// other screen
 		else {
