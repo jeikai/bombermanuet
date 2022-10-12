@@ -17,22 +17,22 @@ import objects.OBJ_Fire;
 
 public class Player extends Entity {
 	KeyHandler keyH;
-	
+
 	public final int screenX;
 	public final int screenY;
-	
-	//Key 
-	int hasKey=0;
+
+	// Key
+	int hasKey = 0;
+
 	// dan bay theo 4 huong
 	public Player(GamePanel gp, KeyHandler keyH) {
 		super(gp);
 		this.keyH = keyH;
-		
-		screenX = gp.screenWidth/2 - (gp.tileSize/2);
-		screenY = gp.screenHeight/2 - (gp.tileSize/2);
-		
-		
-		solidArea = new Rectangle(gp.tileSize/8, gp.tileSize/8, gp.tileSize-gp.tileSize/4, gp.tileSize-gp.tileSize/4);// nho hon player
+
+		screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
+		screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
+
+		solidArea = new Rectangle(8,15,32,25);// nho hon player
 		solidAreaDefaultX = solidArea.x;
 		solidAreaDefaultY = solidArea.y;
 		setDefaultValues();
@@ -45,18 +45,17 @@ public class Player extends Entity {
 	}
 
 	public void setDefaultValues() {
-//		worldX = gp.tileSize * 2;
-//		worldY = gp.tileSize * 4;
+
 		worldX = gp.tileSize * 8;
 		worldY = gp.tileSize * 8;
-		speed = 10;
+		speed = 7;
 		direction = "down";
 
 		// player status
 		maxLife = 6;
 		life = maxLife - 4;
-		bombCount = 1;
 	}
+
 	public void getPlayerImage() {
 
 		up1 = setup("/player/up1");
@@ -99,8 +98,7 @@ public class Player extends Entity {
 			// check va cham monster va Fire
 			int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
 			interactNPC(npcIndex);
-			
-			
+
 			if (collisionOn == false) {
 				switch (direction) {
 				case "up":
@@ -128,38 +126,34 @@ public class Player extends Entity {
 				spriteCounter = 0;
 			}
 		}
-		
-		
-		if (gp.keyH.spacePressed == true && projectileDown.alive == false
-				&& projectileUp.alive == false && projectileLeft.alive == false
-				&& projectileRight.alive == false) {
+
+		if (gp.keyH.spacePressed == true && projectileDown.alive == false && projectileUp.alive == false
+				&& projectileLeft.alive == false && projectileRight.alive == false) {
 
 			// dat vi tri cho projectile
-			bombXpos = (worldX + gp.tileSize/2) - ((worldX + gp.tileSize/2)%gp.tileSize); 
-			bombYpos = (worldY + gp.tileSize/2) - ((worldY + gp.tileSize/2)%gp.tileSize);
-			bomb.set(bombXpos,bombYpos,"down",true,this);
+			bombXpos = (worldX + gp.tileSize / 2) - ((worldX + gp.tileSize / 2) % gp.tileSize);
+			bombYpos = (worldY + gp.tileSize / 2) - ((worldY + gp.tileSize / 2) % gp.tileSize);
+			bomb.set(bombXpos, bombYpos, "down", true, this);
 			gp.projectileList.add(bomb);
 			projectileUp.set(bombXpos, bombYpos, "up", true, this);
 			projectileDown.set(bombXpos, bombYpos, "down", true, this);
 			projectileLeft.set(bombXpos, bombYpos, "left", true, this);
 			projectileRight.set(bombXpos, bombYpos, "right", true, this);
 			// delay thi bom no
-			new java.util.Timer().schedule( 
-			        new java.util.TimerTask() {
-			            @Override
-			            public void run() {
-			                // your code here
-			            	// them vao danh sach cac projectile
-			    			gp.projectileList.add(projectileUp);
-			    			gp.projectileList.add(projectileDown);
-			    			gp.projectileList.add(projectileLeft);
-			    			gp.projectileList.add(projectileRight);
-			            	
-			            }
-			        }, 
-			        //2000 
-			        (bomb.maxLife/gp.FPS)*1000
-			);
+			new java.util.Timer().schedule(new java.util.TimerTask() {
+				@Override
+				public void run() {
+					// your code here
+					// them vao danh sach cac projectile
+					gp.projectileList.add(projectileUp);
+					gp.projectileList.add(projectileDown);
+					gp.projectileList.add(projectileLeft);
+					gp.projectileList.add(projectileRight);
+
+				}
+			},
+					// 2000
+					(bomb.maxLife / gp.FPS) * 1000);
 		}
 
 		// xu ly khi bi va cham voi quai
@@ -173,44 +167,53 @@ public class Player extends Entity {
 		if (life <= 0) {
 			gp.gameState = gp.gameOverState;
 		}
+		if (gp.currentMap > 2) {
+			gp.gameState = gp.gameWinState;
+		}
 	}
-
 
 	public void pickUpObject(int i) {
 
 		if (i != 999) {
-			String name = gp.obj[gp.currentMap][i].name;//FIXED
+			String name = gp.obj[gp.currentMap][i].name;// FIXED
 
 			switch (name) {
 			case "Speed":
 				speed += 1;
-				gp.obj[gp.currentMap][i] = null;//FIXED
+				gp.obj[gp.currentMap][i] = null;// FIXED
 				break;
 			case "Key":
 				hasKey++;
-				gp.obj[gp.currentMap][i] = null;//FIXED
+				gp.obj[gp.currentMap][i] = null;// FIXED
 				break;
 			case "Door":
-				if(hasKey > 0) {
-					gp.obj[gp.currentMap][i] = null;//FIXED
+				if (hasKey > 0) {
+					gp.obj[gp.currentMap][i] = null;// FIXED
 					hasKey--;
 				}
 				break;
 			case "Tent":
 				gp.currentMap++;
+				gp.aSetter.setBreakableTile();
+				gp.aSetter.setObject();
+				gp.aSetter.setNPC();
+				break;
+			case "Heal":
+				life+=1;
+				gp.obj[gp.currentMap][i] = null;
 			}
 		}
 	}
 
 	public void interactNPC(int i) {
 		if (i != 999) {
-		if (invincible == false) {
-			speed = 4;
-			life--;
-			invincible = true;
-		}
+			if (invincible == false) {
+				speed = 4;
+				life--;
+				invincible = true;
+			}
 
-	}
+		}
 
 	}
 

@@ -11,10 +11,13 @@ public class NPC_Orc extends Entity {
 		type = 1;
 		direction = "down";
 		speed = 2;
-		solidArea.width = 32;
-		solidArea.height = 32;
-		solidArea.x = 8;
-		solidArea.y = 8;
+		solidArea.width = 42;
+		solidArea.height = 40;
+		solidArea.x = 3;
+		solidArea.y = 3;
+		solidAreaDefaultX = solidArea.x;
+		solidAreaDefaultY = solidArea.y;
+		onPath = false;
 		getImage();
 	}
 
@@ -30,29 +33,55 @@ public class NPC_Orc extends Entity {
 		right2 = setup("/npc/orc_right_2");
 	}
 	
-	public void setAction() {
+	// override update 
+	public void update() {
 		
-		actionLockCounter ++;
-		if(actionLockCounter == 60) {
-
-			Random random = new Random();
-			int i = random.nextInt(100)+1; // chon 1 so ngau nhien
-			
-			if(i<= 25) {
-				direction = "up";
-			}
-			if(i>25 && i<= 50) {
-				direction = "down";
-			}
-			if(i>50 && i<= 75) {
-				direction = "left";
-			}
-			if(i>75 && i<= 100) {
-				direction = "right";
-			}
-			
-			actionLockCounter = 0;
+		super.update();
+		
+		int xDistance = Math.abs(worldX - gp.player.worldX);
+		int yDistance = Math.abs(worldY - gp.player.worldY);
+		int tileDistance = (xDistance + yDistance) / gp.tileSize;
+		
+		if(onPath == false && tileDistance < 10) {
+			onPath = true;
 		}
-		
+		if(onPath == true && tileDistance > 20) {
+			onPath = false;
+		}
+	}
+	
+	public void setAction() {
+
+		if (onPath == true) {
+			
+			int goalCol = (gp.player.worldX + gp.player.solidArea.x) / gp.tileSize;
+			int goalRow = (gp.player.worldY + gp.player.solidArea.y) / gp.tileSize;
+			
+			searchPath(goalCol,goalRow);
+		} else {
+			actionLockCounter++;
+			if (actionLockCounter == 60) {
+
+				Random random = new Random();
+				int i = random.nextInt(100) + 1; // chon 1 so ngau nhien
+
+				if (i <= 25) {
+					direction = "up";
+				}
+				if (i > 25 && i <= 50) {
+					direction = "down";
+				}
+				if (i > 50 && i <= 75) {
+					direction = "left";
+				}
+				if (i > 75 && i <= 100) {
+					direction = "right";
+				}
+
+				actionLockCounter = 0;
+			}
+
+		}
+
 	}
 }

@@ -24,15 +24,16 @@ public class Projectile extends Entity {
 		this.user = user;
 		this.life = this.maxLife;
 	}
-
+	
 	
 	public void update() {
 		
 		if (user == gp.player) {
-			gp.cChecker.checkTileProjectile(this);
 			
+			gp.cChecker.checkTileProjectile(this);
 			// xu ly khi lua cham npc
 			if(name == "Fire") {
+				
 				int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
 				if (npcIndex != 999) {
 					// giet monster
@@ -54,17 +55,22 @@ public class Projectile extends Entity {
 						gp.player.setDefaultValues();
 					}
 				}
+				
+				int bTileIndex = gp.cChecker.checkEntity(this, gp.bTile);
+				if (bTileIndex != 999) {
+					this.alive = false;
+					damageBreakableTile(bTileIndex);
+				}
 			}
 			
-			int bTileIndex = gp.cChecker.checkEntity(this, gp.bTile);
-			if (bTileIndex != 999) {
-				this.alive = false;
-				damageBreakableTile(bTileIndex);
-			}
+//			int bTileIndex = gp.cChecker.checkEntity(this, gp.bTile);
+//			if (bTileIndex != 999) {
+//				this.alive = false;
+//				damageBreakableTile(bTileIndex);
+//			}
 			
 		}
 		if (user != gp.player) {
-
 		}
 		if(name == "Fire") {
 			switch (direction) {

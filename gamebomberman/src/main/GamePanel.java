@@ -10,6 +10,7 @@ import java.util.Comparator;
 
 import javax.swing.JPanel;
 
+import ai.PathFinder;
 import breakableTiles.BreakableTile;
 import entity.Entity;
 import entity.Player;
@@ -47,10 +48,11 @@ public class GamePanel extends JPanel implements Runnable {
 	public Player player = new Player(this, keyH);
 	public Entity npc[][] = new Entity[maxMap][10];
 	public TileManager tileM = new TileManager(this);
-	public Entity obj[][] = new Entity[maxMap][10]; 
+	public Entity obj[][] = new Entity[maxMap][20]; 
 	public ArrayList<Entity> entityList = new ArrayList<>();
 	public ArrayList<Entity> projectileList = new ArrayList<>();
-	public BreakableTile bTile[][] = new BreakableTile[maxMap][10000000];
+	public BreakableTile bTile[][] = new BreakableTile[maxMap][400];
+	public PathFinder pFinder = new PathFinder(this);
 	
 	// game state
 	public int gameState;
@@ -58,6 +60,8 @@ public class GamePanel extends JPanel implements Runnable {
 	public final int pauseState = 2;
 	public final int titleState = 0;
 	public final int gameOverState = 4;
+	public final int gameWinState = 5;
+	
 	
 	// UI
 	UI ui = new UI(this);
@@ -115,7 +119,9 @@ public class GamePanel extends JPanel implements Runnable {
 	}
 	public void retry() {
 		player.setDefaultValues();
-		
+		aSetter.setBreakableTile();
+		aSetter.setObject();
+		aSetter.setNPC();
 	}
 	public void restart() {
 		player.setDefaultValues();
@@ -123,7 +129,7 @@ public class GamePanel extends JPanel implements Runnable {
 		aSetter.setObject();
 		aSetter.setNPC();
 		
-		gameState = titleState;
+//		gameState = titleState;
 	}
 	public void update() {
 		if(gameState == playState) {
