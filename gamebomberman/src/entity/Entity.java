@@ -13,7 +13,7 @@ import objects.OBJ_Bomb;
 
 public class Entity {
 	// State
-	GamePanel gp;
+	public GamePanel gp;
 	public int worldX,worldY;
 	public int speed;
 	public BufferedImage up1,up2,down1,down2, left1, left2, right1, right2;
@@ -28,6 +28,10 @@ public class Entity {
 	public boolean collisionOn = false;
 	public int actionLockCounter = 0;
 	
+	//Dialogue in game
+	public String dialogue[] = new String[20];
+	public int dialogueIndex = 0;
+		
 	public BufferedImage image, image2, image3;
 	public String name;
 	public boolean collision = false;
@@ -150,7 +154,7 @@ public class Entity {
 		}
 		
 	}
-	
+	public void speak() {}
 	public BufferedImage setup(String imagePath) {
 		UtilityTool uTool = new UtilityTool();
 		BufferedImage image = null;

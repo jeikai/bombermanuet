@@ -57,14 +57,7 @@ public class KeyHandler implements KeyListener {
 			if (code == KeyEvent.VK_SPACE) {
 				spacePressed = true;
 			}
-			if (code == KeyEvent.VK_ESCAPE) {
-				if(gp.gameState == gp.playState) {
-					gp.gameState = gp.pauseState;
-				}
-				else if(gp.gameState == gp.pauseState) {
-					gp.gameState = gp.playState;
-				}
-			}
+			
 			if (code == KeyEvent.VK_R) {
 				switch (gp.currentMap) {
 				case 0: gp.tileM.loadMap("/maps/map01.txt", 0); break;
@@ -76,6 +69,25 @@ public class KeyHandler implements KeyListener {
 		//GAME OVER STATE
 		if (gp.gameState == gp.gameOverState) {
 			gameOverState(code);
+			
+		}
+		//Pause State
+		if ( gp.gameState == gp.playState) {
+			if (code == KeyEvent.VK_P) {
+				gp.gameState = gp.pauseState;
+				
+			}
+		}
+		else if ( gp.gameState == gp.pauseState) {
+			if (code == KeyEvent.VK_ENTER) {
+				gp.gameState = gp.playState;
+			}
+		}
+		//Dialogue state
+		else if ( gp.gameState == gp.dialogueState) {
+			if ( code == KeyEvent.VK_ENTER) {
+				gp.gameState = gp.playState;
+			}
 		}
 		
 		

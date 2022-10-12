@@ -60,9 +60,9 @@ public class GamePanel extends JPanel implements Runnable {
 	public final int pauseState = 2;
 	public final int titleState = 0;
 	public final int gameOverState = 4;
-	
+	public final int dialogueState = 5;
 	// UI
-	UI ui = new UI(this);
+	public UI ui = new UI(this);
 	
 	//Event
 //	public EventHandler eHandler = new EventHandler(this);

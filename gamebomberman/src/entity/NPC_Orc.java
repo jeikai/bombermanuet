@@ -19,6 +19,7 @@ public class NPC_Orc extends Entity {
 		solidAreaDefaultY = solidArea.y;
 		onPath = false;
 		getImage();
+		setDialogue();
 	}
 
 	public void getImage() {
@@ -32,7 +33,10 @@ public class NPC_Orc extends Entity {
 		right1 = setup("/npc/orc_right_1");
 		right2 = setup("/npc/orc_right_2");
 	}
-	
+	public void setDialogue() {
+		dialogue[0] = "HAHAHAHA...Go to hell !!!";
+		dialogue[1] = "I feel angry now.";
+	}
 	// override update 
 	public void update() {
 		
@@ -83,5 +87,26 @@ public class NPC_Orc extends Entity {
 
 		}
 
+	}
+	public void speak() {
+		if ( dialogue[dialogueIndex] == null || gp.gameState == 4) {
+			dialogueIndex = 0;
+		}
+		gp.ui.currentDialogue = dialogue[dialogueIndex];
+		dialogueIndex++;
+		switch(gp.player.direction) {
+		case "up":
+			direction = "down";
+			break;
+		case "down":
+			direction = "up";
+			break;
+		case "left":
+			direction = "right";
+			break;
+		case "right":
+			direction = "left";
+			break;
+		}
 	}
 }

@@ -20,7 +20,7 @@ public class Player extends Entity {
 
 	public final int screenX;
 	public final int screenY;
-
+	public int dialogueMap = 0;
 	// Key
 	int hasKey = 0;
 
@@ -184,9 +184,13 @@ public class Player extends Entity {
 				gp.obj[gp.currentMap][i] = null;// FIXED
 				break;
 			case "Door":
-				if (hasKey > 0) {
-					gp.obj[gp.currentMap][i] = null;// FIXED
+				if(hasKey > 0) {
+					gp.obj[gp.currentMap][i] = null;//FIXED
+					
 					hasKey--;
+				} else {
+					gp.gameState = gp.dialogueState;
+					gp.obj[gp.currentMap][i].speak();
 				}
 				break;
 			case "Tent":
@@ -197,6 +201,7 @@ public class Player extends Entity {
 				gp.aSetter.setBreakableTile();
 				gp.aSetter.setObject();
 				gp.aSetter.setNPC();
+				dialogueMap++;
 			}
 		}
 	}
@@ -207,6 +212,8 @@ public class Player extends Entity {
 				speed = 4;
 				life--;
 				invincible = true;
+				gp.gameState = gp.dialogueState;
+				gp.npc[dialogueMap][i].speak();
 			}
 
 		}

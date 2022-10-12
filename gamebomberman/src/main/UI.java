@@ -1,5 +1,6 @@
 package main;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -19,7 +20,7 @@ public class UI {
 	public String message = "";
 	public boolean gameFinished = false;
 	public int commandNum = 0;
-
+	public String currentDialogue = "";
 	public UI(GamePanel gp) {
 		this.gp = gp;
 		
@@ -62,7 +63,9 @@ public class UI {
 		if(gp.gameState == gp.gameOverState) {
 			drawGameOverScreen();
 		}
-		
+		if ( gp.gameState == gp.dialogueState) {
+			drawDialogueScreen();
+		}
 	}
 
 	public void drawPlayerLife() {
@@ -159,7 +162,30 @@ public class UI {
 		g2.setColor(Color.MAGENTA);
 		g2.drawString(text, x, y);
 	}
-
+	public void drawDialogueScreen() {
+		// Window
+		int x = gp.tileSize * 2;
+		int y = gp.tileSize/2;
+		int width = gp.screenWidth - gp.tileSize*4;
+		int height = gp.tileSize*4;
+		drawSubWindow( x, y, width, height);
+		
+		g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 32F));
+		 x+= gp.tileSize;
+		 y+= gp.tileSize;
+		 g2.drawString(currentDialogue, x, y);
+	}
+	public void drawSubWindow( int x, int y, int width, int height) {
+		Color draw = new Color(0, 0, 0, 100);
+		g2.setColor( draw);
+		g2.fillRoundRect(x, y, width, height, 35, 35 );
+		draw = new Color(255, 255, 255);
+		g2.setColor(draw);
+		//Ve ra do rong cua stroke
+		g2.setStroke(new BasicStroke(5));
+		g2.drawRoundRect(x+5, y+5, width-10, height-10, 25, 25);
+		
+	}
 	public int getXforCenteredText(String text) {
 		int length = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
         return gp.screenWidth / 2 - length / 2;
