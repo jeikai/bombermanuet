@@ -63,14 +63,12 @@ public class UI {
 		if(gp.gameState == gp.gameOverState) {
 			drawGameOverScreen();
 		}
-<<<<<<< HEAD
 		if ( gp.gameState == gp.dialogueState) {
 			drawDialogueScreen();
-=======
+		}
 		//GameWin state
 		if(gp.gameState == gp.gameWinState) {
 			drawGameWinScreen();
->>>>>>> 47002431aff3a310ca901b7a24a2c9b9b9b9c893
 		}
 	}
 

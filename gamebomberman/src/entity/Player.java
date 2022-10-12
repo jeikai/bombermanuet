@@ -202,14 +202,12 @@ public class Player extends Entity {
 				gp.aSetter.setBreakableTile();
 				gp.aSetter.setObject();
 				gp.aSetter.setNPC();
-<<<<<<< HEAD
 				dialogueMap++;
-=======
+
 				break;
 			case "Heal":
 				life+=1;
 				gp.obj[gp.currentMap][i] = null;
->>>>>>> 47002431aff3a310ca901b7a24a2c9b9b9b9c893
 			}
 		}
 	}
