@@ -10,6 +10,7 @@ import java.util.Comparator;
 
 import javax.swing.JPanel;
 
+import ai.PathFinder;
 import breakableTiles.BreakableTile;
 import entity.Entity;
 import entity.Player;
@@ -50,7 +51,8 @@ public class GamePanel extends JPanel implements Runnable {
 	public Entity obj[][] = new Entity[maxMap][10]; 
 	public ArrayList<Entity> entityList = new ArrayList<>();
 	public ArrayList<Entity> projectileList = new ArrayList<>();
-	public BreakableTile bTile[][] = new BreakableTile[maxMap][10000000];
+	public BreakableTile bTile[][] = new BreakableTile[maxMap][1000];
+	public PathFinder pFinder = new PathFinder(this);
 	
 	// game state
 	public int gameState;
@@ -198,15 +200,15 @@ public class GamePanel extends JPanel implements Runnable {
 			
 			
 			// sort entity theo thu tu cai nao co y thap hon thi render sau
-			Collections.sort(entityList,new Comparator<Entity>() {
-
-				@Override
-				public int compare(Entity e1, Entity e2) {
-					int result = Integer.compare(e1.worldY, e2.worldY);
-					return result;
-				}
-				
-			});
+//			Collections.sort(entityList,new Comparator<Entity>() {
+//
+//				@Override
+//				public int compare(Entity e1, Entity e2) {
+//					int result = Integer.compare(e1.worldY, e2.worldY);
+//					return result;
+//				}
+//				
+//			});
 			// draw entities
 			for(int i = 0; i<entityList.size(); i++) {
 				entityList.get(i).draw(g2);

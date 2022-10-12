@@ -12,12 +12,13 @@ import main.UtilityTool;
 import objects.OBJ_Bomb;
 
 public class Entity {
+	// State
 	GamePanel gp;
 	public int worldX,worldY;
 	public int speed;
-	
 	public BufferedImage up1,up2,down1,down2, left1, left2, right1, right2;
 	public String direction = "down";
+	public boolean onPath = true;
 	
 	public int spriteCounter = 0;
 	public int spriteNum = 1;
@@ -40,7 +41,6 @@ public class Entity {
 	public int life;
 	public boolean invincible = false;
 	public int invincibleCounter;
-	boolean spaceNotPressed = true;
 	// ENTITY STATUS
     public boolean alive = true;
     public int bombCount;
@@ -54,15 +54,14 @@ public class Entity {
 	public void setAction() {
 	}
 	
-	public void update() {
-		setAction();
-		
-		
+	public void checkCollision() {
+
 		collisionOn = false;
 		gp.cChecker.checkTile(this);
-		//gp.cChecker.checkObject(this, false);
+		gp.cChecker.checkObject(this, false);
+		gp.cChecker.checkEntity(this, gp.npc);
 		boolean contactPlayer = gp.cChecker.checkPlayer(this);
-		int contactBreakableTile = gp.cChecker.checkEntity(this, gp.bTile);
+		gp.cChecker.checkEntity(this, gp.bTile);
 		// if this is monster and contact a player and breakable tile
 		if(this.type == 1) {
 			if(contactPlayer == true) {
@@ -72,10 +71,14 @@ public class Entity {
 					gp.player.invincible = true;
 				}
 			}
-			if(contactBreakableTile != 999) {
-				collisionOn = true;
-			}
 		}
+	}
+	
+	
+	public void update() {
+		setAction();
+		
+		checkCollision();
 		
 		
 		if (collisionOn == false) {
@@ -160,5 +163,84 @@ public class Entity {
 			e.printStackTrace();
 		}
 		return image;
+	}
+	
+	public void searchPath(int goalCol, int goalRow) {
+		
+		int startCol = (worldX + solidArea.x)/gp.tileSize;
+		int startRow = (worldY + solidArea.y)/ gp.tileSize;
+		
+		gp.pFinder.setNodes(startCol, startRow, goalCol, goalRow);
+		
+		if(gp.pFinder.search() == true) {
+			
+			//next worldX and worldY
+			int nextX = gp.pFinder.pathList.get(0).col * gp.tileSize;
+			int nextY = gp.pFinder.pathList.get(0).row * gp.tileSize;
+			
+			//entity solid area pos
+			int enLeftX = worldX + solidArea.x;
+			int enRightX = worldX + solidArea.x + solidArea.width;
+			int enTopY = worldY + solidArea.y;
+			int enBottomY = worldY + solidArea.y + solidArea.height;
+			
+			// now compare entity current pos to next move's pos
+			
+			// many ifs here to ensure npc wont get stuck ^^
+			if(enTopY > nextY && enLeftX >= nextX && enRightX < nextX + gp.tileSize) {
+				direction = "up";
+			}
+			else if(enTopY < nextY && enLeftX >= nextX && enRightX < nextX + gp.tileSize) {
+				direction = "down";
+			}else if(enTopY >= nextY && enBottomY < nextY + gp.tileSize) {
+				// left or right
+				if(enLeftX > nextX) {
+					direction = "left";
+					
+				}
+				if(enLeftX < nextX) {
+					direction  = "right";
+				}
+			}
+			else if(enTopY > nextY && enLeftX > nextX) {
+				// up or left
+				direction = "up";
+				checkCollision();
+				if(collisionOn == true) {
+					direction = "left";
+				}
+			}
+			else if(enTopY > nextY && enLeftX < nextX) {
+				// up or right
+				direction = "up";
+				checkCollision();
+				if(collisionOn == true) {
+					direction = "right";
+				}
+			}
+			else if(enTopY <nextY && enLeftX > nextX) {
+				// down or left
+				direction = "down";
+				checkCollision();
+				if(collisionOn == true) {
+					direction = "left";
+				}
+			}
+			else if(enTopY <nextY && enLeftX < nextX) {
+				// down or right
+				direction = "down";
+				checkCollision();
+				if(collisionOn == true) {
+					direction = "right";
+				}
+			}
+			
+//			// dung khi da den noi
+//			int nextCol = gp.pFinder.pathList.get(0).col;
+//			int nextRow = gp.pFinder.pathList.get(0).row;
+//			if(nextCol == goalCol && nextRow == goalRow) {
+//				onPath = false;
+//			}
+		}
 	}
 }

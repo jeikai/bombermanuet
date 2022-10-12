@@ -104,9 +104,9 @@ public class AssetSetter {
 		gp.npc[0][0] = new NPC_Orc(gp);
 		gp.npc[0][0].worldX = gp.tileSize*3;
 		gp.npc[0][0].worldY = gp.tileSize * 7;
-		gp.npc[0][1] = new NPC_Orc(gp);
-		gp.npc[0][1].worldX = gp.tileSize*2;
-		gp.npc[0][1].worldY = gp.tileSize * 7;
+		gp.npc[0][3] = new NPC_Orc(gp);
+		gp.npc[0][3].worldX = gp.tileSize*2;
+		gp.npc[0][3].worldY = gp.tileSize * 7;
 		}
 		
 		if (gp.currentMap == 1) { 

@@ -32,7 +32,7 @@ public class Player extends Entity {
 		screenY = gp.screenHeight/2 - (gp.tileSize/2);
 		
 		
-		solidArea = new Rectangle(gp.tileSize/8, gp.tileSize/8, gp.tileSize-gp.tileSize/4, gp.tileSize-gp.tileSize/4);// nho hon player
+		solidArea = new Rectangle(gp.tileSize/8, gp.tileSize/8, gp.tileSize-gp.tileSize/3, gp.tileSize-gp.tileSize/3);// nho hon player
 		solidAreaDefaultX = solidArea.x;
 		solidAreaDefaultY = solidArea.y;
 		setDefaultValues();
@@ -45,17 +45,15 @@ public class Player extends Entity {
 	}
 
 	public void setDefaultValues() {
-//		worldX = gp.tileSize * 2;
-//		worldY = gp.tileSize * 4;
+
 		worldX = gp.tileSize * 8;
 		worldY = gp.tileSize * 8;
-		speed = 10;
+		speed = 7;
 		direction = "down";
 
 		// player status
 		maxLife = 6;
 		life = maxLife - 4;
-		bombCount = 1;
 	}
 	public void getPlayerImage() {
 
