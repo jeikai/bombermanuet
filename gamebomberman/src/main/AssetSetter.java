@@ -91,32 +91,32 @@ public class AssetSetter {
 		}
 		if (gp.currentMap == 2) {
 			gp.obj[2][0] = new OBJ_Key(gp);
-			gp.obj[2][0].worldX = 24 * gp.tileSize;
-			gp.obj[2][0].worldY  = 24 * gp.tileSize;
+			gp.obj[2][0].worldX = 23 * gp.tileSize;
+			gp.obj[2][0].worldY  = 23 * gp.tileSize;
 			
 			gp.obj[2][1] = new OBJ_Key(gp);
-			gp.obj[2][1].worldX = 37 * gp.tileSize;
-			gp.obj[2][1].worldY  = 13 * gp.tileSize;
+			gp.obj[2][1].worldX = 36 * gp.tileSize;
+			gp.obj[2][1].worldY  = 12 * gp.tileSize;
 			
 			gp.obj[2][2] = new OBJ_Key(gp);
-			gp.obj[2][2].worldX = 48 * gp.tileSize;
-			gp.obj[2][2].worldY  = 48 * gp.tileSize;
+			gp.obj[2][2].worldX = 47 * gp.tileSize;
+			gp.obj[2][2].worldY  = 47 * gp.tileSize;
 			
 			gp.obj[2][3] = new OBJ_Door(gp);
-			gp.obj[2][3].worldX = 25 * gp.tileSize;
-			gp.obj[2][3].worldY = 13 * gp.tileSize;
+			gp.obj[2][3].worldX = 24 * gp.tileSize;
+			gp.obj[2][3].worldY = 12 * gp.tileSize;
 			
 			gp.obj[2][4] = new OBJ_Door(gp);
-			gp.obj[2][4].worldX = 41 * gp.tileSize;
-			gp.obj[2][4].worldY = 25 * gp.tileSize;
+			gp.obj[2][4].worldX = 40 * gp.tileSize;
+			gp.obj[2][4].worldY = 24 * gp.tileSize;
 			
 			gp.obj[2][5] = new OBJ_Door(gp);
-			gp.obj[2][5].worldX = 25 * gp.tileSize;
-			gp.obj[2][5].worldY = 47 * gp.tileSize;
+			gp.obj[2][5].worldX = 24 * gp.tileSize;
+			gp.obj[2][5].worldY = 46 * gp.tileSize;
 			
 			gp.obj[2][6] = new OBJ_Tent(gp);
-			gp.obj[2][6].worldX = 4 * gp.tileSize;
-			gp.obj[2][6].worldY = 28 * gp.tileSize;
+			gp.obj[2][6].worldX = 3 * gp.tileSize;
+			gp.obj[2][6].worldY = 27 * gp.tileSize;
 		}
 
 	}

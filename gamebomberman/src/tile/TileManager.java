@@ -36,6 +36,10 @@ public class TileManager {
 		setup(1,"wall",true);
 		setup(2,"floor",false);
 		setup(3,"hut",true);	
+		setup(4,"tile1",false);
+		setup(5,"tile2",true);
+		setup(6,"tile3",false);
+		setup(7,"tile4",true);
 
 	}
 	

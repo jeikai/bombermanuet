@@ -36,7 +36,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 	//map setting
 	public final int maxMap = 10;
-	public int currentMap = 0;
+	public int currentMap = 2;
 	public KeyHandler keyH = new KeyHandler(this);
 	public CollisionChecker cChecker = new CollisionChecker(this);
 	
