@@ -14,6 +14,7 @@ import ai.PathFinder;
 import breakableTiles.BreakableTile;
 import entity.Entity;
 import entity.Player;
+import environment.EnvironmentManager;
 import tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable {
@@ -54,6 +55,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public BreakableTile bTile[][] = new BreakableTile[maxMap][400];
 	public PathFinder pFinder = new PathFinder(this);
 	
+	EnvironmentManager eManager = new EnvironmentManager(this);
 	// game state
 	public int gameState;
 	public final int playState = 1;
@@ -80,7 +82,7 @@ public class GamePanel extends JPanel implements Runnable {
 		aSetter.setBreakableTile();
 		aSetter.setObject();
 		aSetter.setNPC();
-		
+		eManager.setup();
 		gameState = titleState;
 		playMusic();
 	}
@@ -218,6 +220,10 @@ public class GamePanel extends JPanel implements Runnable {
 			}
 			// empty the list
 				entityList.clear();
+			//Environment
+			if ( currentMap == 2) {
+				eManager.draw(g2);
+			}
 			
 			// UI
 			ui.draw(g2);
