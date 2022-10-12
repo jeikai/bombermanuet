@@ -41,7 +41,7 @@ public class Projectile extends Entity {
 					alive = false;
 				}
 			}
-			// xu ly khi lua cham tuong
+			// xu ly khi lua cham tuong, nguoi
 			if(name=="Fire") {
 				int playerIndex = gp.cChecker.checkCollidePlayer(this,gp.player);
 				if(playerIndex != 999) {
@@ -52,7 +52,7 @@ public class Projectile extends Entity {
 						gp.player.invincible = true;
 					}
 					if(gp.player.life<= 0) {
-						gp.player.setDefaultValues();
+						gp.gameState = gp.gameOverState;
 					}
 				}
 				

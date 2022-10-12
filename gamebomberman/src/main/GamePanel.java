@@ -36,7 +36,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 	//map setting
 	public final int maxMap = 10;
-	public int currentMap = 0;
+	public int currentMap = 2;
 	public KeyHandler keyH = new KeyHandler(this);
 	public CollisionChecker cChecker = new CollisionChecker(this);
 	
@@ -46,9 +46,9 @@ public class GamePanel extends JPanel implements Runnable {
 	public AssetSetter aSetter = new AssetSetter(this);
 	Thread gameThread;
 	public Player player = new Player(this, keyH);
-	public Entity npc[][] = new Entity[maxMap][10];
+	public Entity npc[][] = new Entity[maxMap][30];
 	public TileManager tileM = new TileManager(this);
-	public Entity obj[][] = new Entity[maxMap][20]; 
+	public Entity obj[][] = new Entity[maxMap][30]; 
 	public ArrayList<Entity> entityList = new ArrayList<>();
 	public ArrayList<Entity> projectileList = new ArrayList<>();
 	public BreakableTile bTile[][] = new BreakableTile[maxMap][400];
@@ -60,7 +60,13 @@ public class GamePanel extends JPanel implements Runnable {
 	public final int pauseState = 2;
 	public final int titleState = 0;
 	public final int gameOverState = 4;
+<<<<<<< HEAD
 	public final int dialogueState = 5;
+=======
+	public final int gameWinState = 5;
+	
+	
+>>>>>>> 47002431aff3a310ca901b7a24a2c9b9b9b9c893
 	// UI
 	public UI ui = new UI(this);
 	
@@ -120,7 +126,6 @@ public class GamePanel extends JPanel implements Runnable {
 		aSetter.setBreakableTile();
 		aSetter.setObject();
 		aSetter.setNPC();
-		currentMap = 0;
 	}
 	public void restart() {
 		player.setDefaultValues();
@@ -128,7 +133,7 @@ public class GamePanel extends JPanel implements Runnable {
 		aSetter.setObject();
 		aSetter.setNPC();
 		
-		gameState = titleState;
+//		gameState = titleState;
 	}
 	public void update() {
 		if(gameState == playState) {

@@ -32,7 +32,7 @@ public class Player extends Entity {
 		screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
 		screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
 
-		solidArea = new Rectangle(8,15,32,25);// nho hon player
+		solidArea = new Rectangle(15,20,20,20);// nho hon player
 		solidAreaDefaultX = solidArea.x;
 		solidAreaDefaultY = solidArea.y;
 		setDefaultValues();
@@ -167,6 +167,9 @@ public class Player extends Entity {
 		if (life <= 0) {
 			gp.gameState = gp.gameOverState;
 		}
+		if (gp.currentMap > 2) {
+			gp.gameState = gp.gameWinState;
+		}
 	}
 
 	public void pickUpObject(int i) {
@@ -194,14 +197,19 @@ public class Player extends Entity {
 				}
 				break;
 			case "Tent":
-				if(gp.currentMap== 1) {
-					gp.restart();
-				}
 				gp.currentMap++;
+				setDefaultValues();
 				gp.aSetter.setBreakableTile();
 				gp.aSetter.setObject();
 				gp.aSetter.setNPC();
+<<<<<<< HEAD
 				dialogueMap++;
+=======
+				break;
+			case "Heal":
+				life+=1;
+				gp.obj[gp.currentMap][i] = null;
+>>>>>>> 47002431aff3a310ca901b7a24a2c9b9b9b9c893
 			}
 		}
 	}
