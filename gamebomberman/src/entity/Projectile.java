@@ -24,16 +24,16 @@ public class Projectile extends Entity {
 		this.user = user;
 		this.life = this.maxLife;
 	}
-
+	
 	
 	public void update() {
 		
 		if (user == gp.player) {
 			
-			
+			gp.cChecker.checkTileProjectile(this);
 			// xu ly khi lua cham npc
 			if(name == "Fire") {
-				gp.cChecker.checkTileProjectile(this);
+				
 				int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
 				if (npcIndex != 999) {
 					// giet monster

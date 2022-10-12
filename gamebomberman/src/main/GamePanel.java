@@ -48,10 +48,10 @@ public class GamePanel extends JPanel implements Runnable {
 	public Player player = new Player(this, keyH);
 	public Entity npc[][] = new Entity[maxMap][10];
 	public TileManager tileM = new TileManager(this);
-	public Entity obj[][] = new Entity[maxMap][10]; 
+	public Entity obj[][] = new Entity[maxMap][20]; 
 	public ArrayList<Entity> entityList = new ArrayList<>();
 	public ArrayList<Entity> projectileList = new ArrayList<>();
-	public BreakableTile bTile[][] = new BreakableTile[maxMap][1000];
+	public BreakableTile bTile[][] = new BreakableTile[maxMap][400];
 	public PathFinder pFinder = new PathFinder(this);
 	
 	// game state
@@ -117,7 +117,10 @@ public class GamePanel extends JPanel implements Runnable {
 	}
 	public void retry() {
 		player.setDefaultValues();
-		
+		aSetter.setBreakableTile();
+		aSetter.setObject();
+		aSetter.setNPC();
+		currentMap = 0;
 	}
 	public void restart() {
 		player.setDefaultValues();
@@ -200,15 +203,15 @@ public class GamePanel extends JPanel implements Runnable {
 			
 			
 			// sort entity theo thu tu cai nao co y thap hon thi render sau
-//			Collections.sort(entityList,new Comparator<Entity>() {
-//
-//				@Override
-//				public int compare(Entity e1, Entity e2) {
-//					int result = Integer.compare(e1.worldY, e2.worldY);
-//					return result;
-//				}
-//				
-//			});
+			Collections.sort(entityList,new Comparator<Entity>() {
+
+				@Override
+				public int compare(Entity e1, Entity e2) {
+					int result = Integer.compare(e1.worldY, e2.worldY);
+					return result;
+				}
+				
+			});
 			// draw entities
 			for(int i = 0; i<entityList.size(); i++) {
 				entityList.get(i).draw(g2);
