@@ -32,7 +32,7 @@ public class Player extends Entity {
 		screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
 		screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
 
-		solidArea = new Rectangle(8,15,32,25);// nho hon player
+		solidArea = new Rectangle(15,20,20,20);// nho hon player
 		solidAreaDefaultX = solidArea.x;
 		solidAreaDefaultY = solidArea.y;
 		setDefaultValues();
@@ -194,6 +194,7 @@ public class Player extends Entity {
 				break;
 			case "Tent":
 				gp.currentMap++;
+				setDefaultValues();
 				gp.aSetter.setBreakableTile();
 				gp.aSetter.setObject();
 				gp.aSetter.setNPC();

@@ -46,9 +46,9 @@ public class GamePanel extends JPanel implements Runnable {
 	public AssetSetter aSetter = new AssetSetter(this);
 	Thread gameThread;
 	public Player player = new Player(this, keyH);
-	public Entity npc[][] = new Entity[maxMap][10];
+	public Entity npc[][] = new Entity[maxMap][30];
 	public TileManager tileM = new TileManager(this);
-	public Entity obj[][] = new Entity[maxMap][20]; 
+	public Entity obj[][] = new Entity[maxMap][30]; 
 	public ArrayList<Entity> entityList = new ArrayList<>();
 	public ArrayList<Entity> projectileList = new ArrayList<>();
 	public BreakableTile bTile[][] = new BreakableTile[maxMap][400];
